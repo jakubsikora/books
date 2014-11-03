@@ -1,0 +1,116 @@
+.content {
+	margin-top: 50px;
+}
+.undecorated-link:hover {
+	text-decoration: none;
+}
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+	display: none !important;
+}
+.ng-invalid.ng-dirty{
+    border-color:#FA787E;
+}
+.ng-valid.ng-dirty{
+    border-color:#78FA89;
+}
+
+body {
+  background-color: #EEE;
+}
+
+.bookshelf-wrapper {
+  margin: 10px auto;
+  border-top: 15px solid #E4D1B1;
+  border-right: 15px solid #E4D1B1;
+  border-left: 15px solid #E4D1B1;
+  background: #f0e2cb;
+}
+
+.bookshelf-container {
+  list-style: none;
+  background-image: url(/modules/core/img/main/shelf.png);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding:0;
+  margin: 0;
+}
+
+.book {
+  background: #000;
+  width: 25px;
+  height: 170px;
+  margin-right: 5px;
+  margin-top: 30px;
+  z-index: 1;
+}
+
+.book-spine {
+  display: block;
+  width: 170px;
+  height: 25px;
+  padding: 5px;
+  color: white;
+  font-size: 10px;
+   -webkit-transform: rotate(-90deg) translate(-100%, 0);
+   -webkit-transform-origin: 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.book:hover {
+  -webkit-animation: rotateBook 1s forwards;
+  z-index: 2;
+  text-align: center;
+}
+
+.book-cover {
+  visibility: hidden;
+  -webkit-transform: rotate(-90deg) translate(-145px, 25px);
+  -webkit-transform-origin: 0 0;
+}
+
+.book-cover-title {
+  display: block;
+}
+
+/*.book:hover .book-cover {
+  display: block;
+  visibility: visible;
+  background: #555;
+  height: 200px;
+  width: 170px;
+}*/
+
+/*.book:hover .book-spine {
+  visibility: hidden;
+}*/
+
+.book-end {
+  background: #E4D1B1;
+  height: 215px;
+  width: 15px;
+  margin-top: 0;
+}
+
+.book-preview {
+  /*position: absolute;*/
+  height: 200px;
+  width: 200px;
+  background: #FFF;
+}
+
+@-webkit-keyframes rotateBook {
+  0% {
+    transform: rotateZ(0deg) scale(1);
+  }
+
+  100% {
+    transform: translate(0px, 50px);
+  }
+
+  /*100% {
+    transform: rotateZ(90deg) scale(1.3) translate(80px, 0px);
+  }*/
+}
