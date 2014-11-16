@@ -6,6 +6,9 @@
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
+var Book = require('./book.server.model');
+
+
 /**
  * Shelf Schema
  */
@@ -16,6 +19,7 @@ var ShelfSchema = new Schema({
 		required: 'Please fill Shelf name',
 		trim: true
 	},
+	books: [Book],
 	created: {
 		type: Date,
 		default: Date.now

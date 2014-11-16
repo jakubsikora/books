@@ -1,39 +1,79 @@
 <section data-ng-controller="BooksController">
-    <div class="page-header">
-        <h1>New Book</h1>
+    <div class="modal-header">
+        <h3 class="modal-title">{{ 'New Book' | translate }}</h3>
     </div>
-    <div class="col-md-12">
-        <form class="form-horizontal" data-ng-submit="create()" novalidate>
+    <div class="modal-body">
+        <form class="form-horizontal" name="createBookForm">
             <fieldset>
                 <div class="form-group">
-                    <label class="control-label" for="name">Name</label>
-                    <div class="controls">
-                        <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Name" required>
+                    <label class="col-sm-3 control-label" for="isbn">{{ 'ISBN' | translate }}</label>
+                    <div class="col-sm-9">
+                        <input type="text" data-ng-model="formData.isbn" id="isbn" class="form-control" placeholder="{{ 'ISBN (10 or 13 chars)' | translate }}" required>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label" for="name">Shelf</label>
-                    <div class="controls">
-                        <select ng-model="shelf"
+                    <label class="col-sm-3 control-label" for="title">{{ 'Title' | translate }}</label>
+                    <div class="col-sm-9">
+                        <input type="text" data-ng-model="formData.title" id="title" class="form-control" placeholder="{{ 'Title' | translate }}" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="author">{{ 'Author(s)' | translate }}</label>
+                    <div class="col-sm-9">
+                        <input type="text" data-ng-model="formData.author" id="author" class="form-control" placeholder="{{ 'Author(s)' | translate }}" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="publishedDate">{{ 'Published date' | translate }}</label>
+                    <div class="col-sm-2">
+                        <input type="text" data-ng-model="formData.publishedDate" id="publishedDate" class="form-control" placeholder="{{ '1900' | translate }}" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="description">{{ 'Description' | translate }}</label>
+                    <div class="col-sm-9">
+                        <textarea rows="3" data-ng-model="formData.description" id="description" class="form-control" placeholder="{{ 'Description' | translate }}"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="pageCount">{{ 'Page count' | translate }}</label>
+                    <div class="col-sm-2">
+                        <input type="text" data-ng-model="formData.pageCount" id="pageCount" class="form-control" placeholder="{{ 'e.g. 200' | translate }}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="coverColour">{{ 'Cover colour' | translate }}</label>
+                    <div class="col-sm-2">
+                        <input type="color" data-ng-model="formData.coverColour" id="coverColour" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="name">{{ 'Select shelf' | translate }}</label>
+                    <div class="col-sm-9">
+                        <select ng-init="formData.shelf = formData.shelf || shelves[0]"
+                                ng-model="formData.shelf"
                                 ng-options="shelf as shelf.name for shelf in shelves track by shelf._id"
                                 class="form-control"
                                 required></select>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label" for="name">Add new shelf</label>
-                    <div class="controls">
-                        <input type="text" data-ng-model="newshelf" class="form-control" placeholder="New shelf">
-                        <a ng-click="addShelf()" class="btn btn-success btn-sm">Add</a>
+                    <label class="col-sm-3 control-label" for="name">{{ 'or add a new' | translate }}</label>
+                    <div class="col-sm-6">
+                        <input type="text" data-ng-model="formData.newshelf" class="form-control" placeholder="{{ 'New shelf name' | translate }}">
                     </div>
-                </div>
-                <div class="form-group">
-                    <input type="submit" class="btn btn-default">
+                    <div class="col-sm-3">
+                        <a ng-click="addShelf()" class="btn btn-success btn-sm">{{ 'Add new shelf' | translate }}</a>
+                    </div>
                 </div>
 				<div data-ng-show="error" class="text-danger">
 					<strong data-ng-bind="error"></strong>
 				</div>
             </fieldset>
         </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">{{ 'Save &amp; Close' | translate }}</button>
+        <button class="btn btn-warning" ng-click="cancel()">{{ 'Cancel' | translate }}</button>
     </div>
 </section>

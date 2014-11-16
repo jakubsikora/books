@@ -6,19 +6,49 @@
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
-var Shelf = require('./shelf.server.model');
-
 /**
  * Book Schema
  */
 var BookSchema = new Schema({
-	name: {
-		type: String,
-		default: '',
-		required: 'Please fill Book name',
+	isbn: {
+		type: Number,
+		required: 'Please fill the book ISBN (no hyphens)',
 		trim: true
 	},
-	shelf: Shelf,
+	title: {
+		type: String,
+		default: '',
+		required: 'Please fill the book title',
+		trim: true
+	},
+	author: {
+		type: String,
+		default: '',
+		required: 'Please fill the book author',
+		trim: true
+	},
+	publishedDate: {
+		type: Date,
+		required: 'Please fill the book publish date',
+		trim: true
+	},
+	description: {
+		type: String,
+		trim: true
+	},
+	pageCount: {
+		type: Number,
+		trim: true
+	},
+	thumbnail: {
+		type: String,
+		trim: true
+	},
+	coverColour: {
+		type: String,
+		default: '#000000',
+		trim: true
+	},
 	created: {
 		type: Date,
 		default: Date.now

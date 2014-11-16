@@ -14,6 +14,9 @@ module.exports = function(app) {
 		.put(users.requiresLogin, books.hasAuthorization, books.update)
 		.delete(users.requiresLogin, books.hasAuthorization, books.delete);
 
+	app.route('/books/name/:bookName').get(books.byName);
+	app.route('/books/shelf/:shelfId').get(books.byShelfId);
+
 	// Finish by binding the Book middleware
 	app.param('bookId', books.bookByID);
 };

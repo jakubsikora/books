@@ -7,7 +7,12 @@ angular.module('shelves').factory('Shelves', ['$resource',
 		}, {
 			update: {
 				method: 'PUT'
-			}
+			},
+      searchByBookTitle: {
+        url: '/shelves/book/:title',
+        method: 'GET',
+        isArray: true
+      }
 		});
 	}
 ]);

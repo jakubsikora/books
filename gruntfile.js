@@ -136,11 +136,22 @@ module.exports = function(grunt) {
 			unit: {
 				configFile: 'karma.conf.js'
 			}
+		},
+		i18nextract: {
+		  default_options: {
+		    src: [ 'public/**/*.js', 'public/**/*.html' ],
+		    lang: ['en', 'pl'],
+		    dest: 'tmp',
+		    defaultLang: 'en',
+		    safeMode: true
+		  }
 		}
 	});
 
 	// Load NPM tasks
 	require('load-grunt-tasks')(grunt);
+
+	grunt.loadNpmTasks('grunt-angular-translate');
 
 	// Making grunt default to force in order not to break the project.
 	grunt.option('force', true);
@@ -168,4 +179,6 @@ module.exports = function(grunt) {
 
 	// Test task.
 	grunt.registerTask('test', ['env:test', 'mochaTest', 'karma:unit']);
+
+	grunt.registerTask('i18n', ['i18nextract']);
 };

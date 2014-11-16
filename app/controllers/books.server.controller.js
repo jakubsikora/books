@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors'),
 	Book = mongoose.model('Book'),
+	Shelf = mongoose.model('Shelf'),
 	_ = require('lodash');
 
 /**
@@ -72,7 +73,46 @@ exports.delete = function(req, res) {
 /**
  * List of Books
  */
-exports.list = function(req, res) { Book.find().sort('-created').populate('user', 'displayName').exec(function(err, books) {
+// exports.list = function(req, res) { Book.find().sort('-created').populate('user', 'displayName').exec(function(err, books) {
+// 		if (err) {
+// 			return res.status(400).send({
+// 				message: errorHandler.getErrorMessage(err)
+// 			});
+// 		} else {
+// 			res.jsonp(books);
+// 		}
+// 	});
+// };
+exports.list = function(req, res) { Shelf.find({}, {"books" : 1}).sort('-created').populate('user', 'displayName').exec(function(err, shelvesBooks) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			//TODO should be done in mongo?
+			var flattenedBooks = [];
+			shelvesBooks.forEach(function(shelfBook) {
+				shelfBook.books.forEach(function(book) {
+					flattenedBooks.push(book);
+				});
+			});
+			res.jsonp(flattenedBooks);
+		}
+	});
+};
+
+exports.byName = function(req, res) { Book.find({ name: new RegExp(req.params.bookName, 'i')}).sort('-created').populate('user', 'displayName').exec(function(err, books) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(books);
+		}
+	});
+};
+
+exports.byShelfId = function(req, res) { Book.find({ 'shelf._id': new RegExp(req.params.shelfId, 'i')}).sort('-created').populate('user', 'displayName').exec(function(err, books) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)

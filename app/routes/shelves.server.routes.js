@@ -14,6 +14,7 @@ module.exports = function(app) {
 		.put(users.requiresLogin, shelves.hasAuthorization, shelves.update)
 		.delete(users.requiresLogin, shelves.hasAuthorization, shelves.delete);
 
+	app.route('/shelves/book/:title').get(shelves.shelfByBookTitle);
 	// Finish by binding the Shelf middleware
 	app.param('shelfId', shelves.shelfByID);
 };

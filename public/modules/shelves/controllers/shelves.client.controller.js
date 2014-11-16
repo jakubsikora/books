@@ -1,8 +1,8 @@
 'use strict';
 
 // Shelves controller
-angular.module('shelves').controller('ShelvesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Shelves',
-	function($scope, $stateParams, $location, Authentication, Shelves ) {
+angular.module('shelves').controller('ShelvesController', ['$scope', '$stateParams', '$location', '$modal', '$log', 'Authentication', 'Shelves',
+	function($scope, $stateParams, $location, $modal, $log, Authentication, Shelves ) {
 		$scope.authentication = Authentication;
 
 		// Create new Shelf
@@ -40,11 +40,11 @@ angular.module('shelves').controller('ShelvesController', ['$scope', '$statePara
 		};
 
 		// Update existing Shelf
-		$scope.update = function() {
-			var shelf = $scope.shelf ;
+		$scope.update = function(updatedShelf) {
+			var shelf = updatedShelf;
 
 			shelf.$update(function() {
-				$location.path('shelves/' + shelf._id);
+				//$location.path('shelves/' + shelf._id);
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
@@ -61,5 +61,34 @@ angular.module('shelves').controller('ShelvesController', ['$scope', '$statePara
 				shelfId: $stateParams.shelfId
 			});
 		};
+
+		$scope.modalUpdate = function (size, selectedShelf) {
+	    var modalInstance = $modal.open({
+	      templateUrl: 'modules/shelves/views/edit-shelf.client.view.html',
+	      controller: function($scope, $modalInstance, shelf) {
+	      	$scope.shelf = shelf;
+
+	      	$scope.ok = function () {
+				    $modalInstance.close($scope.shelf);
+				  };
+
+				  $scope.cancel = function () {
+				    $modalInstance.dismiss('cancel');
+				  };
+	      },
+	      size: size,
+	      resolve: {
+	        shelf: function () {
+	          return selectedShelf;
+	        }
+	      }
+	    });
+
+	    modalInstance.result.then(function (selectedItem) {
+	      $scope.selected = selectedItem;
+	    }, function () {
+	      $log.info('Modal dismissed at: ' + new Date());
+	    });
+	  };
 	}
 ]);

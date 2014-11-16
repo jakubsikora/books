@@ -94,6 +94,17 @@ exports.shelfByID = function(req, res, next, id) { Shelf.findById(id).populate('
 	});
 };
 
+exports.shelfByBookTitle = function(req, res) { Shelf.find({ books: { $elemMatch: { title: req.params.title }}}).populate('user', 'displayName').exec(function(err, shelf) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(shelf);
+		}
+	});
+};
+
 /**
  * Shelf authorization middleware
  */
