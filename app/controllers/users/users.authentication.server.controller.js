@@ -7,12 +7,14 @@ var _ = require('lodash'),
 	errorHandler = require('../errors'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
-	User = mongoose.model('User');
+	User = mongoose.model('User'),
+	Shelf = require('../shelves');
 
 /**
  * Signup
  */
 exports.signup = function(req, res) {
+	var that = this;
 	// For security measurement we remove the roles from the req.body object
 	delete req.body.roles;
 
@@ -24,13 +26,16 @@ exports.signup = function(req, res) {
 	user.provider = 'local';
 	user.displayName = user.firstName + ' ' + user.lastName;
 
-	// Then save the user 
+	// Then save the user
 	user.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
+			console.log('user', user);
+			Shelf.postSignup(user);
+
 			// Remove sensitive data before login
 			user.password = undefined;
 			user.salt = undefined;
@@ -68,6 +73,7 @@ exports.signin = function(req, res, next) {
 		}
 	})(req, res, next);
 };
+
 
 /**
  * Signout

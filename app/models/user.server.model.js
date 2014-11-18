@@ -116,26 +116,4 @@ UserSchema.methods.authenticate = function(password) {
 	return this.password === this.hashPassword(password);
 };
 
-/**
- * Find possible not used username
- */
-UserSchema.statics.findUniqueUsername = function(email, suffix, callback) {
-	var _this = this;
-	var possibleUsername = email + (suffix || '');
-
-	_this.findOne({
-		email: possibleUsername
-	}, function(err, user) {
-		if (!err) {
-			if (!user) {
-				callback(possibleUsername);
-			} else {
-				return _this.findUniqueUsername(email, (suffix || 0) + 1, callback);
-			}
-		} else {
-			callback(null);
-		}
-	});
-};
-
 mongoose.model('User', UserSchema);

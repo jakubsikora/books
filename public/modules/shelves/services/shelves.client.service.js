@@ -8,11 +8,36 @@ angular.module('shelves').factory('Shelves', ['$resource',
 			update: {
 				method: 'PUT'
 			},
-      searchByBookTitle: {
-        url: '/shelves/book/:title',
+      default: {
+        url: '/shelves/default',
+        method: 'GET'
+      },
+      byBook: {
+        url: '/shelves/book/:bookId',
         method: 'GET',
         isArray: true
-      }
+      },
+      createBook: {
+        url: '/shelves/:shelfId/books',
+        params: { shelfId: '@_id' },
+        method: 'PUT'
+      },
+      updateBook: {
+        url: '/shelves/:shelfId/books/:bookId',
+        params: { shelfId: '@_id', bookId: '@bookId' },
+        method: 'PUT'
+      },
+      deleteBook: {
+        url: '/shelves/:shelfId/books/:bookId',
+        params: { shelfId: '@_id', bookId: '@bookId' },
+        method: 'DELETE'
+      },
+      readBooks: {
+        url: '/shelves/books',
+        method: 'GET',
+        isArray: true
+      },
+
 		});
 	}
 ]);

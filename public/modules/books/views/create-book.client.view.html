@@ -44,7 +44,13 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label" for="coverColour">{{ 'Cover colour' | translate }}</label>
                     <div class="col-sm-2">
-                        <input type="color" data-ng-model="formData.coverColour" id="coverColour" class="form-control">
+                        <input type="color" data-ng-model="formData.coverColour" ng-style="{ 'background-color': formData.coverColour }" id="coverColour" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="fontColour">{{ 'Font colour' | translate }}</label>
+                    <div class="col-sm-2">
+                        <input type="color" data-ng-model="formData.fontColour" ng-style="{ 'background-color': formData.fontColour }"  id="fontColour" class="form-control">
                     </div>
                 </div>
                 <div class="form-group">

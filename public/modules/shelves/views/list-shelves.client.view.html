@@ -1,6 +1,6 @@
-<section data-ng-controller="ShelvesController" data-ng-init="find()">
+<section data-ng-controller="ShelvesController">
     <div class="page-header">
-        <h1>Shelves</h1>
+        <h1>{{ 'Shelves' | translate }}</h1>
     </div>
 
     <div class="row">
@@ -11,32 +11,41 @@
                        ng-model="searchText"
                        placeholder="Search...">
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">Go!</button>
+                    <button class="btn btn-default" type="button">{{ 'Go!' | translate }}</button>
                 </span>
             </div>
         </div>
 
         <div class="col-xs-12 col-sm-4" text-center>
-            <button type="button" class="btn btn-lg btn-success text-center">
-                <span class="glyphicon glyphicon-th-list"></span> New Shelf
+            <button type="button" class="btn btn-lg btn-success text-center" ng-click="modalCreate('lg')">
+                <span class="glyphicon glyphicon-th-list"></span> {{ 'New Shelf' | translate }}
             </button>
         </div>
     </div>
 
-    <div class="list-group">
-        <div class="col-xs-12 col-sm-12" data-ng-repeat="shelf in shelves | filter:searchText">
-            <a ng-click="modalUpdate('lg', shelf)" class="list-group-item">
-    			<small class="list-group-item-text">
-    				Posted on
-    				<span data-ng-bind="shelf.created | date:'medium'"></span>
-    				by
-    				<span data-ng-bind="shelf.user.displayName"></span>
-    			</small>
-    			<h4 class="list-group-item-heading" data-ng-bind="shelf.name"></h4>
-            </a>
+    <div class="row list-buffer">
+        <div class="list-group">
+            <div class="col-xs-12 col-sm-12 list-group-item" ng-class="{disabled: shelf.default}" data-ng-repeat="shelf in data.shelves | filter:searchText">
+                <div class="pull-left">
+                    <span class="list-group-item-text">
+                        <strong class="uppercase">{{ shelf.name }}</strong>
+                    </span>
+                </div>
+
+                <div class="pull-right">
+                    <small>{{ 'Number of books' | translate }}</small>
+                    <span class="badge">{{ shelf.books.length }}</span>
+                </div>
+
+                <div class="pull-right" ng-if="!shelf.default">
+                    <button class="btn btn-info btn-sm" ng-click="modalUpdate('lg', shelf)">
+                        <span class="glyphicon glyphicon-pencil"></span> {{ 'Edit' | translate }}
+                    </button>
+                    <button class="btn btn-danger btn-sm" ng-click="modalDelete('lg', shelf)">
+                        <span class="glyphicon glyphicon-trash"></span> {{ 'Delete' | translate }}
+                    </button>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="alert alert-warning text-center" data-ng-hide="!shelves.$resolved || shelves.length">
-    	No Shelves yet, why don't you <a href="/#!/shelves/create">create one</a>?
     </div>
 </section>

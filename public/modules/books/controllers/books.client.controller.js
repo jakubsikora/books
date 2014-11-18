@@ -1,32 +1,29 @@
 'use strict';
 
 // Books controller
-angular.module('books').controller('BooksController', ['$scope', '$stateParams', '$location', '$modal', '$log', 'Authentication', 'Books', 'Shelves',
-	function($scope, $stateParams, $location, $modal, $log, Authentication, Books, Shelves) {
+angular.module('books').controller('BooksController', ['$scope', '$stateParams', '$location', '$modal', '$log', 'Authentication', 'Shelves',
+	function($scope, $stateParams, $location, $modal, $log, Authentication, Shelves) {
 		$scope.authentication = Authentication;
 		$scope.shelves = Shelves.query();
 
 		$scope.data = {
-			books: []
+			shelves: []
 		};
 
 		// Create new Book
 		$scope.create = function(data) {
-			// Create new Book object
-			var book = new Books ({
-				isbn: data.isbn,
-				title: data.title,
-				author: data.author,
-				publishedDate: data.publishedDate,
-				description: data.description,
-				pageCount: data.pageCount,
-				thumbnail: data.thumbnail,
-				coverColour: data.coverColour
-			});
-
-			Shelves.get({ shelfId: data.shelf._id }, function(shelf) {
-				shelf.books.push(book);
-				shelf.$update(
+			Shelves.get({ shelfId: data.shelf._id }).$promise.then(function(shelf) {
+				shelf.$createBook({
+					isbn: data.isbn,
+					title: data.title,
+					author: data.author,
+					publishedDate: data.publishedDate,
+					description: data.description,
+					pageCount: data.pageCount,
+					thumbnail: data.thumbnail,
+					coverColour: data.coverColour,
+					fontColour: data.fontColour
+				},
 					function(response) {
 						$scope.find();
 					},
@@ -37,61 +34,45 @@ angular.module('books').controller('BooksController', ['$scope', '$stateParams',
 		};
 
 		// Remove existing Book
-		$scope.remove = function( book ) {
-			if ( book ) { book.$remove();
+		$scope.remove = function(formData) {
+			formData.shelf.$deleteBook({ 'bookId': formData._id},
+				function(response) {
+					$scope.find();
+				},
+				function(errorResponse) {
+					$scope.error = errorResponse.data.message;
+			});
 
-				for (var i in $scope.books ) {
-					if ($scope.books [i] === book ) {
-						$scope.books.splice(i, 1);
-					}
-				}
-			} else {
-				$scope.book.$remove(function() {
-					$location.path('books');
-				});
-			}
 		};
 
 		// Update existing Book
 		$scope.update = function(data) {
-			console.log(data);
-			var book = new Books ({
-				isbn: data.isbn,
-				title: data.title,
-				author: data.author,
-				publishedDate: data.publishedDate,
-				description: data.description,
-				pageCount: data.pageCount,
-				thumbnail: data.thumbnail,
-				coverColour: data.coverColour
+			Shelves.get({ shelfId: data.shelf._id }).$promise.then(function(shelf) {
+				shelf.$updateBook({ 'bookId': data._id,
+					isbn: data.isbn,
+					title: data.title,
+					author: data.author,
+					publishedDate: data.publishedDate,
+					description: data.description,
+					pageCount: data.pageCount,
+					thumbnail: data.thumbnail,
+					coverColour: data.coverColour,
+					fontColour: data.fontColour
+				},
+					function(response) {
+						$scope.find();
+					},
+					function(errorResponse) {
+						$scope.error = errorResponse.data.message;
+					});
 			});
-
-			Shelves.get({ shelfId: data.shelf._id }, function(shelf) {
-				debugger;
-			});
-
-
-			// var book = $scope.book;
-
-			// book.$update(function() {
-			// 	$location.path('books/' + book._id);
-			// }, function(errorResponse) {
-			// 	$scope.error = errorResponse.data.message;
-			// });
 		};
 
 		// Find a list of Books
 		$scope.find = function() {
-			Books.query().$promise.then(function(result) {
-				$scope.data.books = result;
-			});
-		};
-
-		// Find existing Book
-		$scope.findOne = function() {
-			$scope.book = Books.get({
-				bookId: $stateParams.bookId
-			});
+			Shelves.query().$promise.then(function(shelves) {
+      	$scope.data.shelves = shelves;
+    	});
 		};
 
 		$scope.addShelf = function() {
@@ -109,7 +90,7 @@ angular.module('books').controller('BooksController', ['$scope', '$stateParams',
 	    var modalInstance = $modal.open({
 	      templateUrl: 'modules/books/views/edit-book.client.view.html',
 	      controller: function($scope, $modalInstance, book) {
-	      	Shelves.searchByBookTitle({ title: book.title}, function(shelf) {
+	      	Shelves.byBook({ bookId: book._id}, function(shelf) {
 	      		$scope.formData = book;
 						$scope.formData.shelf = shelf[0];
 	      	});
@@ -125,7 +106,7 @@ angular.module('books').controller('BooksController', ['$scope', '$stateParams',
 	      size: size,
 	      resolve: {
 	        book: function () {
-	          return selectedBook;
+	        	return selectedBook;
 	        }
 	      }
 	    });
@@ -137,11 +118,46 @@ angular.module('books').controller('BooksController', ['$scope', '$stateParams',
 	    });
 	  };
 
+	  $scope.modalDelete = function (size, selectedShelf, selectedBook) {
+	    var modalInstance = $modal.open({
+	      templateUrl: 'modules/books/views/delete-book.client.view.html',
+	      controller: function($scope, $modalInstance, book, shelf) {
+	      	$scope.formData = book;
+	      	$scope.formData.shelf = shelf;
+
+	      	$scope.ok = function () {
+				    $modalInstance.close($scope.formData);
+				  };
+
+				  $scope.cancel = function () {
+				    $modalInstance.dismiss('cancel');
+				  };
+	      },
+	      size: size,
+	      resolve: {
+	        book: function () {
+	          return selectedBook;
+	        },
+	        shelf: function () {
+	          return selectedShelf;
+	        }
+	      }
+	    });
+
+	    modalInstance.result.then(function (formData) {
+	    	$scope.remove(formData);
+	    }, function () {
+	      $log.info('Modal dismissed at: ' + new Date());
+	    });
+	  };
+
 		$scope.modalCreate = function (size) {
 	    var modalInstance = $modal.open({
 	      templateUrl: 'modules/books/views/create-book.client.view.html',
 	      controller: function($scope, $modalInstance) {
 	      	$scope.formData = { };
+	      	$scope.formData.fontColour = '#FFFFFF';
+	      	$scope.formData.coverColour = '#000000';
 
 	      	$scope.ok = function () {
 	      		$modalInstance.close($scope.formData);

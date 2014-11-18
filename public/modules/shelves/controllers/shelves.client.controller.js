@@ -5,38 +5,52 @@ angular.module('shelves').controller('ShelvesController', ['$scope', '$statePara
 	function($scope, $stateParams, $location, $modal, $log, Authentication, Shelves ) {
 		$scope.authentication = Authentication;
 
+		$scope.data = {
+			shelves: []
+		};
+
 		// Create new Shelf
-		$scope.create = function() {
+		$scope.create = function(data) {
 			// Create new Shelf object
 			var shelf = new Shelves ({
-				name: this.name
+				name: data.name
 			});
 
 			// Redirect after save
 			shelf.$save(function(response) {
-				$location.path('shelves/' + response._id);
-
-				// Clear form fields
-				$scope.name = '';
+				$scope.find();
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
 		};
 
 		// Remove existing Shelf
-		$scope.remove = function( shelf ) {
-			if ( shelf ) { shelf.$remove();
+		$scope.remove = function(shelf) {
+			if (shelf) {
+				var books = shelf.books;
+				if (books) {
+					$scope.moveToDefault(books);
+				}
 
-				for (var i in $scope.shelves ) {
-					if ($scope.shelves [i] === shelf ) {
-						$scope.shelves.splice(i, 1);
+				shelf.$remove();
+
+				for (var i in $scope.data.shelves ) {
+					if ($scope.data.shelves [i] === shelf ) {
+						$scope.data.shelves.splice(i, 1);
 					}
 				}
-			} else {
-				$scope.shelf.$remove(function() {
-					$location.path('shelves');
-				});
 			}
+		};
+
+		$scope.moveToDefault = function(books) {
+			Shelves.default().$promise.then(function(shelf) {
+				var defaultBooks = shelf.books;
+				defaultBooks = books.concat(defaultBooks);
+
+				// Move books to default
+				shelf.books = defaultBooks;
+				$scope.update(shelf);
+			});
 		};
 
 		// Update existing Shelf
@@ -44,7 +58,7 @@ angular.module('shelves').controller('ShelvesController', ['$scope', '$statePara
 			var shelf = updatedShelf;
 
 			shelf.$update(function() {
-				//$location.path('shelves/' + shelf._id);
+				$scope.find();
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
@@ -52,7 +66,7 @@ angular.module('shelves').controller('ShelvesController', ['$scope', '$statePara
 
 		// Find a list of Shelves
 		$scope.find = function() {
-			$scope.shelves = Shelves.query();
+			$scope.data.shelves = Shelves.query();
 		};
 
 		// Find existing Shelf
@@ -62,14 +76,67 @@ angular.module('shelves').controller('ShelvesController', ['$scope', '$statePara
 			});
 		};
 
+		$scope.modalCreate = function (size) {
+	    var modalInstance = $modal.open({
+	      templateUrl: 'modules/shelves/views/create-shelf.client.view.html',
+	      controller: function($scope, $modalInstance) {
+	      	$scope.formData = {};
+
+	      	$scope.ok = function () {
+	      		$modalInstance.close($scope.formData);
+				  };
+
+				  $scope.cancel = function () {
+				    $modalInstance.dismiss('cancel');
+				  };
+	      },
+	      size: size
+	    });
+
+	    modalInstance.result.then(function (formData) {
+    		$scope.create(formData);
+	    }, function () {
+	      $log.info('Modal dismissed at: ' + new Date());
+	    });
+	  };
+
 		$scope.modalUpdate = function (size, selectedShelf) {
 	    var modalInstance = $modal.open({
 	      templateUrl: 'modules/shelves/views/edit-shelf.client.view.html',
 	      controller: function($scope, $modalInstance, shelf) {
-	      	$scope.shelf = shelf;
+	      	$scope.formData = shelf;
 
 	      	$scope.ok = function () {
-				    $modalInstance.close($scope.shelf);
+				    $modalInstance.close($scope.formData);
+				  };
+
+				  $scope.cancel = function () {
+				    $modalInstance.dismiss('cancel');
+				  };
+	      },
+	      size: size,
+	      resolve: {
+	        shelf: function () {
+	        	return selectedShelf;
+	        }
+	      }
+	    });
+
+	    modalInstance.result.then(function (formData) {
+	      $scope.update(formData);
+	    }, function () {
+	      $log.info('Modal dismissed at: ' + new Date());
+	    });
+	  };
+
+	  $scope.modalDelete = function (size, selectedShelf) {
+	    var modalInstance = $modal.open({
+	      templateUrl: 'modules/shelves/views/delete-shelf.client.view.html',
+	      controller: function($scope, $modalInstance, shelf) {
+	      	$scope.formData = shelf;
+
+	      	$scope.ok = function () {
+				    $modalInstance.close($scope.formData);
 				  };
 
 				  $scope.cancel = function () {
@@ -84,11 +151,13 @@ angular.module('shelves').controller('ShelvesController', ['$scope', '$statePara
 	      }
 	    });
 
-	    modalInstance.result.then(function (selectedItem) {
-	      $scope.selected = selectedItem;
+	    modalInstance.result.then(function (formData) {
+	    	$scope.remove(formData);
 	    }, function () {
 	      $log.info('Modal dismissed at: ' + new Date());
 	    });
 	  };
+
+	  $scope.find();
 	}
 ]);
