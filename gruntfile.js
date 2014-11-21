@@ -43,7 +43,7 @@ module.exports = function(grunt) {
 			},
 			clientCSS: {
 				files: watchFiles.clientCSS,
-				tasks: ['csslint'],
+				tasks: ['autoprefixer', 'csslint'],
 				options: {
 					livereload: true
 				}
@@ -145,6 +145,16 @@ module.exports = function(grunt) {
 		    defaultLang: 'en',
 		    safeMode: true
 		  }
+		},
+		autoprefixer: {
+			options: {
+			},
+			multiple_files: {
+				expand: true,
+				flatten: true,
+				src: 'public/modules/**/css/*.css',
+				dest: 'public/dist/css/'
+			}
 		}
 	});
 
@@ -152,6 +162,7 @@ module.exports = function(grunt) {
 	require('load-grunt-tasks')(grunt);
 
 	grunt.loadNpmTasks('grunt-angular-translate');
+	grunt.loadNpmTasks('grunt-autoprefixer');
 
 	// Making grunt default to force in order not to break the project.
 	grunt.option('force', true);
@@ -166,7 +177,7 @@ module.exports = function(grunt) {
 	});
 
 	// Default task(s).
-	grunt.registerTask('default', ['lint', 'concurrent:default']);
+	grunt.registerTask('default', ['autoprefixer', 'concurrent:default']);
 
 	// Debug task.
 	grunt.registerTask('debug', ['lint', 'concurrent:debug']);
@@ -175,10 +186,11 @@ module.exports = function(grunt) {
 	grunt.registerTask('lint', ['jshint', 'csslint']);
 
 	// Build task(s).
-	grunt.registerTask('build', ['lint', 'loadConfig', 'ngAnnotate', 'uglify', 'cssmin']);
+	grunt.registerTask('build', ['autoprefixer', 'lint', 'loadConfig', 'ngAnnotate', 'uglify', 'cssmin']);
 
 	// Test task.
 	grunt.registerTask('test', ['env:test', 'mochaTest', 'karma:unit']);
 
 	grunt.registerTask('i18n', ['i18nextract']);
+	// grunt.registerTask('autoprefixer', ['autoprefixer']);
 };

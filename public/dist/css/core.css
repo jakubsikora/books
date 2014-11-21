@@ -24,9 +24,18 @@ body {
 .bookshelf-container {
   list-style: none;
   background-image: url(/modules/core/img/shelf/shelf3.png);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
   padding:0;
   margin: 0 auto;
   max-width: 1000px;
@@ -75,8 +84,12 @@ body {
   padding: 5px;
   color: white;
   font-size: 10px;
-  transform: rotate(89deg) translate(0px, -25px);
-  transform-origin: 0 0;
+  -webkit-transform: rotate(89deg) translate(0px, -25px);
+      -ms-transform: rotate(89deg) translate(0px, -25px);
+          transform: rotate(89deg) translate(0px, -25px);
+  -webkit-transform-origin: 0 0;
+      -ms-transform-origin: 0 0;
+          transform-origin: 0 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -92,15 +105,20 @@ body {
 }
 
 .book:hover {
-  animation: rotateBook 1s forwards;
+  -webkit-animation: rotateBook 1s forwards;
+          animation: rotateBook 1s forwards;
   z-index: 2;
   text-align: center;
 }
 
 .book-cover {
   visibility: hidden;
-  transform: rotate(-90deg) translate(-145px, 25px);
-  transform-origin: 0 0;
+  -webkit-transform: rotate(-90deg) translate(-145px, 25px);
+      -ms-transform: rotate(-90deg) translate(-145px, 25px);
+          transform: rotate(-90deg) translate(-145px, 25px);
+  -webkit-transform-origin: 0 0;
+      -ms-transform-origin: 0 0;
+          transform-origin: 0 0;
 }
 
 .book-cover-title {
@@ -108,7 +126,8 @@ body {
 }
 
 .book.book-end:hover {
-  animation: none;
+  -webkit-animation: none;
+          animation: none;
 }
 
 /*.book:hover .book-cover {
@@ -149,13 +168,31 @@ body {
   background: #FFF;
 }
 
-@keyframes rotateBook {
+@-webkit-keyframes rotateBook {
   0% {
-    transform: rotateZ(0deg) scale(1);
+    -webkit-transform: rotateZ(0deg) scale(1);
+            transform: rotateZ(0deg) scale(1);
   }
 
   100% {
-    transform: rotate(1deg) translate(0px, -5px) scale(1.3);
+    -webkit-transform: rotate(1deg) translate(0px, -5px) scale(1.3);
+            transform: rotate(1deg) translate(0px, -5px) scale(1.3);
+  }
+
+  /*100% {
+    transform: rotateZ(90deg) scale(1.3) translate(80px, 0px);
+  }*/
+}
+
+@keyframes rotateBook {
+  0% {
+    -webkit-transform: rotateZ(0deg) scale(1);
+            transform: rotateZ(0deg) scale(1);
+  }
+
+  100% {
+    -webkit-transform: rotate(1deg) translate(0px, -5px) scale(1.3);
+            transform: rotate(1deg) translate(0px, -5px) scale(1.3);
   }
 
   /*100% {

@@ -10,7 +10,7 @@ var mongoose = require('mongoose'),
 	_ = require('lodash');
 
 /******************** Shelfs ********************/
-exports.postSignup = function(user) {
+exports.postSignup = function(user, res) {
 	var shelf = new Shelf({
 		name: 'default',
 		default: true

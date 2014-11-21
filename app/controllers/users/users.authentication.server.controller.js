@@ -34,7 +34,7 @@ exports.signup = function(req, res) {
 			});
 		} else {
 			console.log('user', user);
-			Shelf.postSignup(user);
+			Shelf.postSignup(user, res);
 
 			// Remove sensitive data before login
 			user.password = undefined;

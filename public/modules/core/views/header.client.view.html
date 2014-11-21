@@ -17,7 +17,7 @@
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        	<ul class="nav navbar-nav navbar-left" data-ng-if="menu.shouldRender(authentication.user);">
+<!-- TODO:        	<ul class="nav navbar-nav navbar-left" data-ng-if="menu.shouldRender(authentication.user);">
 						<li data-ng-repeat="item in menu.items | orderBy: 'position'" data-ng-if="item.shouldRender(authentication.user);" ng-switch="item.menuItemType" ui-route="{{item.uiRoute}}" class="{{item.menuItemClass}}" ng-class="{active: ($uiRoute)}" dropdown="item.menuItemType === 'dropdown'">
 							<a ng-switch-when="dropdown" class="dropdown-toggle">
 								<span data-ng-bind="item.title"></span>
@@ -30,7 +30,20 @@
 							</ul>
 							<a ng-switch-default href="/#!/{{item.link}}" data-ng-bind="item.title"></a>
 						</li>
-					</ul>
+					</ul> -->
+
+          <ul class="nav navbar-nav navbar-left" data-ng-if="menu.shouldRender(authentication.user);">
+            <li ui-route="/books" ng-class="{active: ($uiRoute)}">
+              <a href="/#!/books">
+                <span>{{ 'Books' | translate }}</span>
+              </a>
+            </li>
+            <li ui-route="/shelves" ng-class="{active: ($uiRoute)}">
+              <a href="/#!/shelves">
+                <span>{{ 'Shelves' | translate }}</span>
+              </a>
+            </li>
+          </ul>
 
 					<!-- Translation bar -->
 					<ul class="nav navbar-nav navbar-right">
@@ -55,16 +68,16 @@
 					<ul class="nav navbar-nav navbar-right" data-ng-show="authentication.user">
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-								{{ 'Hello' | translate }} <span data-ng-bind="authentication.user.displayName"></span> <b class="caret"></b>
+								{{ 'Hi!' | translate }} <span data-ng-bind="authentication.user.displayName"></span> <b class="caret"></b>
 							</a>
 							<ul class="dropdown-menu">
-								<li>
+								<!-- <li>
 									<a href="/#!/settings/profile">Edit Profile</a>
 								</li>
 								<li data-ng-show="authentication.user.provider === 'local'">
 									<a href="/#!/settings/password">Change Password</a>
 								</li>
-								<li class="divider"></li>
+								<li class="divider"></li> -->
 								<li>
 									<a href="/auth/signout">Signout</a>
 								</li>

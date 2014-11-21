@@ -53,7 +53,7 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 
     var randomIntFromInterval = function(min,max) {
         return Math.floor(Math.random()*(max-min+1)+min);
-    }
+    };
 
     //TODO, order, sort, pagination
   }
