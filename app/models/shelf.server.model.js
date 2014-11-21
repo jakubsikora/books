@@ -8,7 +8,7 @@ var mongoose = require('mongoose'),
 
 var BookSchema = new Schema({
 	isbn: {
-		type: Number,
+		type: String,
 		required: 'Please fill the book ISBN (no hyphens)',
 		trim: true
 	},
@@ -25,7 +25,7 @@ var BookSchema = new Schema({
 		trim: true
 	},
 	publishedDate: {
-		type: Number,
+		type: String,
 		required: 'Please fill the book publish date',
 		trim: true
 	},
@@ -68,7 +68,7 @@ var ShelfSchema = new Schema({
 	name: {
 		type: String,
 		default: '',
-		required: 'Please fill Shelf name',
+		required: 'Please fill shelf name',
 		trim: true
 	},
 	default: {

@@ -1,5 +1,8 @@
+<div class="intro-message">
+    <h2>{{ 'Register and start your own library' | translate }}</h2>
+    <hr class="intro-divider">
+</div>
 <section class="row" data-ng-controller="AuthenticationController">
-	<h3 class="col-md-12 text-center">Sign up</h3>
 	<div class="col-xs-offset-1 col-xs-10 col-md-offset-4 col-md-4 signup-form-bg">
 		<form name="userForm" data-ng-submit="signup()" class="signin form-horizontal" novalidate autocomplete="off">
 			<fieldset>
@@ -16,7 +19,7 @@
 					  <span class="input-group-addon">
 					  	<i class="text-muted glyphicon glyphicon-user"></i>
 					  </span>
-					  <input type="text" required id="firstName" name="firstName" class="form-control" data-ng-model="credentials.firstName" placeholder="First Name">
+					  <input type="text" required id="firstName" name="firstName" class="form-control" data-ng-model="credentials.firstName" placeholder="{{ 'First Name' | translate }}">
 					</div>
 				</div>
 

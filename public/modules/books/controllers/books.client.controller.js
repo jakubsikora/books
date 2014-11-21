@@ -1,8 +1,8 @@
 'use strict';
 
 // Books controller
-angular.module('books').controller('BooksController', ['$scope', '$stateParams', '$location', '$modal', '$log', 'Authentication', 'Shelves',
-	function($scope, $stateParams, $location, $modal, $log, Authentication, Shelves) {
+angular.module('books').controller('BooksController', ['$scope', '$stateParams', '$location', '$modal', '$log', '$translate', 'Authentication', 'Shelves',
+	function($scope, $stateParams, $location, $modal, $log, $translate, Authentication, Shelves) {
 		$scope.authentication = Authentication;
 		$scope.shelves = Shelves.query();
 
@@ -34,37 +34,53 @@ angular.module('books').controller('BooksController', ['$scope', '$stateParams',
 		};
 
 		// Remove existing Book
-		$scope.remove = function(formData) {
-			formData.shelf.$deleteBook({ 'bookId': formData._id},
+		$scope.remove = function(data) {
+			data.shelf.$deleteBook({ 'bookId': data._id},
 				function(response) {
 					$scope.find();
 				},
 				function(errorResponse) {
 					$scope.error = errorResponse.data.message;
 			});
-
 		};
 
 		// Update existing Book
 		$scope.update = function(data) {
 			Shelves.get({ shelfId: data.shelf._id }).$promise.then(function(shelf) {
-				shelf.$updateBook({ 'bookId': data._id,
-					isbn: data.isbn,
-					title: data.title,
-					author: data.author,
-					publishedDate: data.publishedDate,
-					description: data.description,
-					pageCount: data.pageCount,
-					thumbnail: data.thumbnail,
-					coverColour: data.coverColour,
-					fontColour: data.fontColour
-				},
-					function(response) {
-						$scope.find();
-					},
-					function(errorResponse) {
-						$scope.error = errorResponse.data.message;
-					});
+
+				// Get shelf for this book to check if it shelf hasnt changed
+				Shelves.byBook({ bookId: data._id}).$promise.then(function(currentShelf) {
+					if (shelf._id !== currentShelf[0]._id) {
+						// Shelf has changed
+						// Delete the book from the currentShelf
+						var currentData = {};
+						currentData = angular.copy(data);
+						currentData.shelf = currentShelf[0];
+
+						$scope.remove(currentData);
+
+						// Create book in the shelf
+						$scope.create(data);
+					} else {
+						shelf.$updateBook({ 'bookId': data._id,
+							isbn: data.isbn,
+							title: data.title,
+							author: data.author,
+							publishedDate: data.publishedDate,
+							description: data.description,
+							pageCount: data.pageCount,
+							thumbnail: data.thumbnail,
+							coverColour: data.coverColour,
+							fontColour: data.fontColour
+						},
+						function(response) {
+							$scope.find();
+						},
+						function(errorResponse) {
+							$scope.error = errorResponse.data.message;
+						});
+		      }
+	      });
 			});
 		};
 
@@ -96,7 +112,13 @@ angular.module('books').controller('BooksController', ['$scope', '$stateParams',
 	      	});
 
 	      	$scope.ok = function () {
-				    $modalInstance.close($scope.formData);
+				    if (this.form.editBookForm.$valid) {
+	      			$modalInstance.close($scope.formData);
+      			} else {
+      				$translate('Please fill or required fields').then(function (requiredFields) {
+						    $scope.error = requiredFields;
+						  });
+      			}
 				  };
 
 				  $scope.cancel = function () {
@@ -160,7 +182,13 @@ angular.module('books').controller('BooksController', ['$scope', '$stateParams',
 	      	$scope.formData.coverColour = '#000000';
 
 	      	$scope.ok = function () {
-	      		$modalInstance.close($scope.formData);
+	      		if (this.form.createBookForm.$valid) {
+	      			$modalInstance.close($scope.formData);
+      			} else {
+      				$translate('Please fill or required fields').then(function (requiredFields) {
+						    $scope.error = requiredFields;
+						  });
+      			}
 				  };
 
 				  $scope.cancel = function () {

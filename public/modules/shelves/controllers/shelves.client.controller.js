@@ -1,8 +1,8 @@
 'use strict';
 
 // Shelves controller
-angular.module('shelves').controller('ShelvesController', ['$scope', '$stateParams', '$location', '$modal', '$log', 'Authentication', 'Shelves',
-	function($scope, $stateParams, $location, $modal, $log, Authentication, Shelves ) {
+angular.module('shelves').controller('ShelvesController', ['$scope', '$stateParams', '$location', '$modal', '$log', '$translate', 'Authentication', 'Shelves',
+	function($scope, $stateParams, $location, $modal, $log, $translate, Authentication, Shelves ) {
 		$scope.authentication = Authentication;
 
 		$scope.data = {
@@ -83,7 +83,13 @@ angular.module('shelves').controller('ShelvesController', ['$scope', '$statePara
 	      	$scope.formData = {};
 
 	      	$scope.ok = function () {
-	      		$modalInstance.close($scope.formData);
+	      		if (this.form.createShelfForm.$valid) {
+	      			$modalInstance.close($scope.formData);
+      			} else {
+      				$translate('Please fill or required fields').then(function (requiredFields) {
+						    $scope.error = requiredFields;
+						  });
+      			}
 				  };
 
 				  $scope.cancel = function () {
@@ -107,7 +113,13 @@ angular.module('shelves').controller('ShelvesController', ['$scope', '$statePara
 	      	$scope.formData = shelf;
 
 	      	$scope.ok = function () {
-				    $modalInstance.close($scope.formData);
+				    if (this.form.updateShelfForm.$valid) {
+	      			$modalInstance.close($scope.formData);
+      			} else {
+      				$translate('Please fill or required fields').then(function (requiredFields) {
+						    $scope.error = requiredFields;
+						  });
+      			}
 				  };
 
 				  $scope.cancel = function () {

@@ -35,6 +35,7 @@ exports.create = function(req, res) {
 	shelf.user = req.user;
 
 	shelf.save(function(err) {
+		console.log(err);
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
@@ -185,6 +186,7 @@ exports.updateBook = function(req, res) {
 };
 
 exports.deleteBook = function(req, res) {
+	console.log(req.params);
 	Shelf.update(
 		{ _id: req.params.shelfId },
 		{ $pull: { 'books': { '_id': req.params.bookId }}}).exec(function(err, shelf) {

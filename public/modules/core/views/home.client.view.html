@@ -1,16 +1,32 @@
+<div class="intro-message">
+    <h3>{{ 'My Books' | translate }}</h3>
+    <hr class="intro-divider">
+</div>
 <section data-ng-controller="HomeController">
 	<div class="row">
 		<div class="col-md-12">
 			<div class="bookshelf-wrapper">
+				<div class="bookshelf-top"></div>
+				<div class="bookshelf-left"></div>
+				<div class="bookshelf-right"></div>
 				<ul class="bookshelf-container">
 					<li class="book"
 							ng-repeat="book in flattenBooks"
-							ng-class="{ 'book-end': book.book_end }">
-							<span class='book-spine'>
+							ng-class="{
+								'book-end': book.book_end,
+								'book-placeholder': book.book_placeholder
+							}"
+							ng-style="{	width: book.size }">
+							<span class='book-spine'
+										ng-if="!book.book_placeholder"
+										ng-style="{
+											color: book.fontColour,
+											background: book.coverColour}">
 								<span>{{ book.book_end === false ?  book.author + ': ' : '' }}</span>
 								<span>{{ book.book_end === false ?  book.title : '' }}</span>
 							</span>
-							<span class="book-cover">
+							<span class="book-cover"
+										ng-if="!book.book_placeholder">
 								<span class="book-cover-author">{{ book.author }}</span>
 								<span class="book-cover-title">{{ book.title }}</span>
 							</span>

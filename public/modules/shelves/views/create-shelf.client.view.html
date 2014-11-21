@@ -3,12 +3,12 @@
         <h3 class="modal-title">{{ 'New Shelf' | translate }}</h3>
     </div>
     <div class="modal-body">
-        <form class="form-horizontal" name="createShelfForm">
+        <form class="form-horizontal" name="form.createShelfForm">
             <fieldset>
-                <div class="form-group">
+                <div class="form-group required">
                     <label class="col-sm-3 control-label" for="name">{{ 'Name' | translate }}</label>
                     <div class="col-sm-9">
-                        <input type="text" data-ng-model="formData.name" id="name" class="form-control" placeholder="{{ 'Shelf name' | translate }}" required>
+                        <input type="text" data-ng-model="formData.name"  name="name" id="name" class="form-control" placeholder="{{ 'Shelf name' | translate }}" required>
                     </div>
                 </div>
                 <div data-ng-show="error" class="text-danger">
@@ -18,7 +18,7 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()">{{ 'Save &amp; Close' | translate }}</button>
+        <button class="btn btn-primary" ng-click="ok()" >{{ 'Save &amp; Close' | translate }}</button>
         <button class="btn btn-warning" ng-click="cancel()">{{ 'Cancel' | translate }}</button>
     </div>
 </section>

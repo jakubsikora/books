@@ -6,6 +6,6 @@ angular.module('books').run(['Menus',
 		// Set top bar menu items
 		Menus.addMenuItem('topbar', 'Books', 'books', 'dropdown', '/books(/create)?');
 		Menus.addSubMenuItem('topbar', 'books', 'List Books', 'books');
-		Menus.addSubMenuItem('topbar', 'books', 'New Book', 'books/create');
+		//Menus.addSubMenuItem('topbar', 'books', 'New Book', 'books/create');
 	}
 ]);

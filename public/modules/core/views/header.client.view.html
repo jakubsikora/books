@@ -1,103 +1,78 @@
 <!-- Navigation -->
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
+    <div class="container" data-ng-controller="HeaderController">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <button type="button"
+            				class="navbar-toggle"
+            				data-toggle="collapse"
+            				data-target="#bs-example-navbar-collapse-1"
+            				data-ng-click="toggleCollapsibleMenu()">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Start Bootstrap</a>
+						<a href="/#!/" class="navbar-brand">{{ 'My Books' | translate }}</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="#">About</a>
-                </li>
-                <li>
-                    <a href="#">Services</a>
-                </li>
-                <li>
-                    <a href="#">Contact</a>
-                </li>
-            </ul>
+        	<ul class="nav navbar-nav navbar-left" data-ng-if="menu.shouldRender(authentication.user);">
+						<li data-ng-repeat="item in menu.items | orderBy: 'position'" data-ng-if="item.shouldRender(authentication.user);" ng-switch="item.menuItemType" ui-route="{{item.uiRoute}}" class="{{item.menuItemClass}}" ng-class="{active: ($uiRoute)}" dropdown="item.menuItemType === 'dropdown'">
+							<a ng-switch-when="dropdown" class="dropdown-toggle">
+								<span data-ng-bind="item.title"></span>
+								<b class="caret"></b>
+							</a>
+							<ul ng-switch-when="dropdown" class="dropdown-menu">
+								<li data-ng-repeat="subitem in item.items | orderBy: 'position'" data-ng-if="subitem.shouldRender(authentication.user);" ui-route="{{subitem.uiRoute}}" ng-class="{active: $uiRoute}">
+									<a href="/#!/{{subitem.link}}" data-ng-bind="subitem.title"></a>
+								</li>
+							</ul>
+							<a ng-switch-default href="/#!/{{item.link}}" data-ng-bind="item.title"></a>
+						</li>
+					</ul>
+
+					<!-- Translation bar -->
+					<ul class="nav navbar-nav navbar-right">
+            <li>
+							<a ng-click="changeLanguage('en')">EN</a>
+						</li>
+						<li class="divider-vertical"></li>
+						<li>
+							<a ng-click="changeLanguage('pl')">PL</a>
+						</li>
+					</ul>
+
+					<ul class="nav navbar-nav navbar-right" data-ng-hide="authentication.user">
+						<li ui-route="/signup" ng-class="{active: $uiRoute}">
+							<a href="/#!/signup">{{ 'Sign Up' | translate }}</a>
+						</li>
+						<li class="divider-vertical"></li>
+						<li ui-route="/signin" ng-class="{active: $uiRoute}">
+							<a href="/#!/signin">{{ 'Log In' | translate }}</a>
+						</li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right" data-ng-show="authentication.user">
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								{{ 'Hello' | translate }} <span data-ng-bind="authentication.user.displayName"></span> <b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a href="/#!/settings/profile">Edit Profile</a>
+								</li>
+								<li data-ng-show="authentication.user.provider === 'local'">
+									<a href="/#!/settings/password">Change Password</a>
+								</li>
+								<li class="divider"></li>
+								<li>
+									<a href="/auth/signout">Signout</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
         </div>
         <!-- /.navbar-collapse -->
     </div>
     <!-- /.container -->
 </nav>
-
-
-<div class="container" data-ng-controller="HeaderController">
-	<div class="navbar-header">
-		<button class="navbar-toggle" type="button" data-ng-click="toggleCollapsibleMenu()">
-			<span class="sr-only">Toggle navigation</span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-		</button>
-		<a href="/#!/" class="navbar-brand">{{ 'books' | translate }}</a>
-	</div>
-	<nav class="collapse navbar-collapse" collapse="!isCollapsed" role="navigation">
-		<ul class="nav navbar-nav" data-ng-if="menu.shouldRender(authentication.user);">
-			<li data-ng-repeat="item in menu.items | orderBy: 'position'" data-ng-if="item.shouldRender(authentication.user);" ng-switch="item.menuItemType" ui-route="{{item.uiRoute}}" class="{{item.menuItemClass}}" ng-class="{active: ($uiRoute)}" dropdown="item.menuItemType === 'dropdown'">
-				<a ng-switch-when="dropdown" class="dropdown-toggle">
-					<span data-ng-bind="item.title"></span>
-					<b class="caret"></b>
-				</a>
-				<ul ng-switch-when="dropdown" class="dropdown-menu">
-					<li data-ng-repeat="subitem in item.items | orderBy: 'position'" data-ng-if="subitem.shouldRender(authentication.user);" ui-route="{{subitem.uiRoute}}" ng-class="{active: $uiRoute}">
-						<a href="/#!/{{subitem.link}}" data-ng-bind="subitem.title"></a>
-					</li>
-				</ul>
-				<a ng-switch-default href="/#!/{{item.link}}" data-ng-bind="item.title"></a>
-			</li>
-		</ul>
-
-		<!-- Translation bar -->
-		<ul class="nav navbar-nav navbar-right">
-			<li>
-				<a ng-click="changeLanguage('en')">EN</a>
-			</li>
-			<li class="divider-vertical"></li>
-			<li>
-				<a ng-click="changeLanguage('pl')">PL</a>
-			</li>
-		</ul>
-
-		<ul class="nav navbar-nav navbar-right" data-ng-hide="authentication.user">
-			<li ui-route="/signup" ng-class="{active: $uiRoute}">
-				<a href="/#!/signup">{{ 'Sign Up' | translate }}</a>
-			</li>
-			<li class="divider-vertical"></li>
-			<li ui-route="/signin" ng-class="{active: $uiRoute}">
-				<a href="/#!/signin">{{ 'Log In' | translate }}</a>
-			</li>
-		</ul>
-		<ul class="nav navbar-nav navbar-right" data-ng-show="authentication.user">
-			<li class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-					<span data-ng-bind="authentication.user.displayName"></span> <b class="caret"></b>
-				</a>
-				<ul class="dropdown-menu">
-					<li>
-						<a href="/#!/settings/profile">Edit Profile</a>
-					</li>
-					<li>
-						<a href="/#!/settings/accounts">Manage Social Accounts</a>
-					</li>
-					<li data-ng-show="authentication.user.provider === 'local'">
-						<a href="/#!/settings/password">Change Password</a>
-					</li>
-					<li class="divider"></li>
-					<li>
-						<a href="/auth/signout">Signout</a>
-					</li>
-				</ul>
-			</li>
-		</ul>
-	</nav>
-</div>

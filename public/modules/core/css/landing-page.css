@@ -31,14 +31,14 @@ h6 {
     padding-bottom: 50px;
     text-align: center;
     color: #f8f8f8;
-    background: url(../img/intro-bg.jpg) no-repeat center center;
+    background: url(../img/main/intro.jpg) no-repeat center center;
     background-size: cover;
 }
 
 .intro-message {
     position: relative;
-    padding-top: 20%;
-    padding-bottom: 20%;
+    padding-top: 5%;
+    padding-bottom: 0;
 }
 
 .intro-message > h1 {
@@ -53,13 +53,17 @@ h6 {
     border-bottom: 1px solid rgba(0,0,0,0.2);
 }
 
+.intro-message > h2 {
+    text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+}
+
 .intro-message > h3 {
     text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
 }
 
 @media(max-width:767px) {
     .intro-message {
-        padding-bottom: 15%;
+        padding-bottom: 5%;
     }
 
     .intro-message > h1 {

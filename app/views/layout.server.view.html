@@ -48,12 +48,31 @@
 </head>
 
 <body class="ng-cloak">
-	<header data-ng-include="'/modules/core/views/header.client.view.html'" class="navbar navbar-fixed-top navbar-inverse"></header>
-	<section class="content">
-		<section class="container">
-			{% block content %}{% endblock %}
-		</section>
-	</section>
+	<header data-ng-include="'/modules/core/views/header.client.view.html'"></header>
+
+	<!-- Header -->
+  <div class="intro-header">
+
+      <div class="container">
+
+          <div class="row">
+              <div class="col-lg-12">
+                  <section class="content">
+										<section class="container">
+											{% block content %}{% endblock %}
+										</section>
+									</section>
+              </div>
+          </div>
+
+      </div>
+      <!-- /.container -->
+
+  </div>
+  <!-- /.intro-header -->
+
+  <!-- Footer -->
+  <footer data-ng-include="'/modules/core/views/footer.client.view.html'"></footer>
 
 	<!--Embedding The User Object-->
 	<script type="text/javascript">
