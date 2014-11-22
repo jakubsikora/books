@@ -106,13 +106,14 @@ angular.module('books').config(['$stateProvider',
 'use strict';
 
 // Books controller
-angular.module('books').controller('BooksController', ['$scope', '$stateParams', '$location', '$modal', '$log', '$translate', 'Authentication', 'Shelves',
-	function($scope, $stateParams, $location, $modal, $log, $translate, Authentication, Shelves) {
+angular.module('books').controller('BooksController', ['$scope', '$timeout', '$stateParams', '$location', '$modal', '$log', '$translate', 'Authentication', 'Shelves',
+	function($scope, $timeout, $stateParams, $location, $modal, $log, $translate, Authentication, Shelves) {
 		$scope.authentication = Authentication;
 		$scope.shelves = Shelves.query();
 
 		$scope.data = {
-			shelves: []
+			shelves: [],
+			alert: null
 		};
 
 		// Create new Book
@@ -131,6 +132,15 @@ angular.module('books').controller('BooksController', ['$scope', '$stateParams',
 				},
 					function(response) {
 						$scope.find();
+
+						// TODO: service for alerts
+						$translate('Book has been created.').then(function (alert) {
+					    $scope.data.alert = alert;
+
+					    $timeout(function() {
+		            $scope.data.alert = null;
+		          }, 3000);
+					  });
 					},
 					function(errorResponse) {
 						$scope.error = errorResponse.data.message;
@@ -143,6 +153,14 @@ angular.module('books').controller('BooksController', ['$scope', '$stateParams',
 			data.shelf.$deleteBook({ 'bookId': data._id},
 				function(response) {
 					$scope.find();
+					// TODO: service for alerts
+					$translate('Book has been deleted.').then(function (alert) {
+				    $scope.data.alert = alert;
+
+				    $timeout(function() {
+	            $scope.data.alert = null;
+	          }, 3000);
+				  });
 				},
 				function(errorResponse) {
 					$scope.error = errorResponse.data.message;
@@ -180,6 +198,15 @@ angular.module('books').controller('BooksController', ['$scope', '$stateParams',
 						},
 						function(response) {
 							$scope.find();
+
+							// TODO: service for alerts
+							$translate('Book has been updated.').then(function (alert) {
+						    $scope.data.alert = alert;
+
+						    $timeout(function() {
+			            $scope.data.alert = null;
+			          }, 3000);
+						  });
 						},
 						function(errorResponse) {
 							$scope.error = errorResponse.data.message;
@@ -327,7 +354,20 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 		state('home', {
 			url: '/',
 			templateUrl: 'modules/core/views/home.client.view.html'
-		});
+		}).
+		state('about', {
+			url: '/about',
+			templateUrl: 'modules/core/views/about.client.view.html'
+		}).
+		state('contact', {
+			url: '/contact',
+			templateUrl: 'modules/core/views/contact.client.view.html'
+		}).
+		state('faq', {
+			url: '/faq',
+			templateUrl: 'modules/core/views/faq.client.view.html'
+		})
+		;
 	}
 ]);
 'use strict';
@@ -638,12 +678,13 @@ angular.module('shelves').config(['$stateProvider',
 'use strict';
 
 // Shelves controller
-angular.module('shelves').controller('ShelvesController', ['$scope', '$stateParams', '$location', '$modal', '$log', '$translate', 'Authentication', 'Shelves',
-	function($scope, $stateParams, $location, $modal, $log, $translate, Authentication, Shelves ) {
+angular.module('shelves').controller('ShelvesController', ['$scope', '$timeout',  '$stateParams', '$location', '$modal', '$log', '$translate', 'Authentication', 'Shelves',
+	function($scope, $timeout, $stateParams, $location, $modal, $log, $translate, Authentication, Shelves ) {
 		$scope.authentication = Authentication;
 
 		$scope.data = {
-			shelves: []
+			shelves: [],
+			alert: null
 		};
 
 		// Create new Shelf
@@ -656,6 +697,15 @@ angular.module('shelves').controller('ShelvesController', ['$scope', '$statePara
 			// Redirect after save
 			shelf.$save(function(response) {
 				$scope.find();
+				// TODO: service for alerts
+				$translate('Shelf has been created.').then(function (alert) {
+			    $scope.data.alert = alert;
+
+			    $timeout(function() {
+            $scope.data.alert = null;
+          }, 3000);
+			  });
+
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
@@ -670,6 +720,15 @@ angular.module('shelves').controller('ShelvesController', ['$scope', '$statePara
 				}
 
 				shelf.$remove();
+
+				// TODO: service for alerts
+				$translate('Shelf has been deleted.').then(function (alert) {
+			    $scope.data.alert = alert;
+
+			    $timeout(function() {
+            $scope.data.alert = null;
+          }, 3000);
+			  });
 
 				for (var i in $scope.data.shelves ) {
 					if ($scope.data.shelves [i] === shelf ) {
@@ -696,6 +755,15 @@ angular.module('shelves').controller('ShelvesController', ['$scope', '$statePara
 
 			shelf.$update(function() {
 				$scope.find();
+
+				// TODO: service for alerts
+				$translate('Shelf has been updated.').then(function (alert) {
+			    $scope.data.alert = alert;
+
+			    $timeout(function() {
+            $scope.data.alert = null;
+          }, 3000);
+			  });
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
@@ -891,7 +959,7 @@ angular.module('users').config(['$stateProvider',
 		// Users state routing
 		$stateProvider.
 		state('profile', {
-			url: '/settings/profile',
+			url: '/settings/profiles',
 			templateUrl: 'modules/users/views/settings/edit-profile.client.view.html'
 		}).
 		state('password', {
