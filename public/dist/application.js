@@ -380,7 +380,7 @@ angular.module('core').config(['$translateProvider',
 		  suffix: '.json'
 		});
 
-		$translateProvider.preferredLanguage('en');
+		$translateProvider.preferredLanguage('pl');
 		// try to find out preferred language by yourself
 		//$translateProvider.determinePreferredLanguage();
 
