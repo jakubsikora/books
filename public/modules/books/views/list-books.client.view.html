@@ -28,7 +28,7 @@
         <div class="col-xs-12 col-sm-12" data-ng-repeat="shelf in data.shelves">
             <div class="panel panel-default">
                 <div class="panel-heading uppercase bookshelf-head">
-                    {{ shelf.name }}
+                    {{ shelf.name | translate }}
                     <span class="label label-info shelf-description">{{ shelf.description | translate }}</span></small>
                 </div>
                 <div class="panel-body">

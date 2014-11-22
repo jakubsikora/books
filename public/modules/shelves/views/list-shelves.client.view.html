@@ -29,7 +29,7 @@
             <div class="col-xs-12 col-sm-12 list-group-item" ng-class="{disabled: shelf.default}" data-ng-repeat="shelf in data.shelves | filter:searchText">
                 <div class="pull-left">
                     <span class="list-group-item-text">
-                        <strong class="uppercase">{{ shelf.name }}</strong>
+                        <strong class="uppercase">{{ shelf.name | translate }}</strong>
                         <span class="label label-info shelf-description">{{ shelf.description | translate }}</span></small>
                     </span>
                 </div>
