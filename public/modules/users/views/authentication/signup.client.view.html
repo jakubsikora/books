@@ -28,7 +28,7 @@
 					  <span class="input-group-addon">
 					  	<i class="text-muted glyphicon glyphicon-user"></i>
 					  </span>
-					  <input type="text" id="lastName" name="lastName" class="form-control" data-ng-model="credentials.lastName" placeholder="Last Name">
+					  <input type="text" id="lastName" name="lastName" class="form-control" data-ng-model="credentials.lastName" placeholder="{{ 'Last Name' | translate }}">
 					</div>
 				</div>
 
@@ -46,16 +46,16 @@
 					  <span class="input-group-addon">
 					  	<i class="text-muted glyphicon glyphicon-asterisk"></i>
 					  </span>
-					  <input type="password" id="password" name="password" class="form-control" data-ng-model="credentials.password" placeholder="Password">
+					  <input type="password" id="password" name="password" class="form-control" data-ng-model="credentials.password" placeholder="{{ 'Password' | translate }}">
 					</div>
 				</div>
 
 				<div class="text-center form-group">
-					<button type="submit" class="btn btn-success btn-lg btn-block">Sign up</button>
+					<button type="submit" class="btn btn-success btn-lg btn-block">{{ 'Sign up' | translate }}</button>
 				</div>
 
 				<div class="text-center form-group">
-					<a href="/#!/signin" class="show-signup">or Log in</a>
+					<a href="/#!/signin" class="show-signup">{{ 'or Log in' | translate }}</a>
 				</div>
 			</fieldset>
 		</form>

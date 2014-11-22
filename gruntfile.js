@@ -142,8 +142,7 @@ module.exports = function(grunt) {
 		    src: [ 'public/**/*.js', 'public/**/*.html' ],
 		    lang: ['en', 'pl'],
 		    dest: 'tmp',
-		    defaultLang: 'en',
-		    safeMode: true
+		    defaultLang: 'en'
 		  }
 		},
 		autoprefixer: {
