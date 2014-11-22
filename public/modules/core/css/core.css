@@ -192,3 +192,17 @@ body {
   min-width: 130px;
   text-align: left;
 }
+
+.shelf-description {
+  position: relative;
+  left: 20px;
+  bottom: 1px;
+}
+
+.bookshelf-head {
+  text-align: left;
+}
+
+.flag {
+  cursor: pointer;
+}

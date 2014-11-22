@@ -13,7 +13,8 @@ var mongoose = require('mongoose'),
 exports.postSignup = function(user, res) {
 	var shelf = new Shelf({
 		name: 'default',
-		default: true
+		default: true,
+		description: 'DEFAULT_DESCRIPTION'
 	});
 
 	shelf.user = user;
@@ -163,10 +164,10 @@ exports.updateBook = function(req, res) {
 	Shelf.update(
 		{ _id: req.params.shelfId, 'books._id': req.params.bookId },
    	{ $set: {
-   		'books.$.description': req.query.description,
+   		'books.$.description': req.query.description || null,
    		'books.$.isbn': req.query.isbn,
-   		'books.$.pageCount': req.query.pageCount,
-   		'books.$.publishedDate': req.query.publishedDate,
+   		'books.$.pageCount': req.query.pageCount || null,
+   		'books.$.publishedDate': req.query.publishedDate || null,
    		'books.$.fontColour': req.query.fontColour,
    		'books.$.coverColour': req.query.coverColour,
    		'books.$.author': req.query.author,

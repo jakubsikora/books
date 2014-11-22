@@ -9,7 +9,7 @@
                 <input type="text"
                        class="form-control"
                        ng-model="searchText"
-                       placeholder="Search...">
+                       placeholder="{{ 'Search your shelves...' | translate }}">
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="button">{{ 'Go!' | translate }}</button>
                 </span>
@@ -24,11 +24,13 @@
     </div>
 
     <div class="row list-buffer">
+        <div class="alert alert-success" role="alert" ng-if="data.alert">{{ data.alert }}</div>
         <div class="list-group">
             <div class="col-xs-12 col-sm-12 list-group-item" ng-class="{disabled: shelf.default}" data-ng-repeat="shelf in data.shelves | filter:searchText">
                 <div class="pull-left">
                     <span class="list-group-item-text">
                         <strong class="uppercase">{{ shelf.name }}</strong>
+                        <span class="label label-info shelf-description">{{ shelf.description | translate }}</span></small>
                     </span>
                 </div>
 

@@ -1,13 +1,14 @@
 'use strict';
 
 // Books controller
-angular.module('books').controller('BooksController', ['$scope', '$stateParams', '$location', '$modal', '$log', '$translate', 'Authentication', 'Shelves',
-	function($scope, $stateParams, $location, $modal, $log, $translate, Authentication, Shelves) {
+angular.module('books').controller('BooksController', ['$scope', '$timeout', '$stateParams', '$location', '$modal', '$log', '$translate', 'Authentication', 'Shelves',
+	function($scope, $timeout, $stateParams, $location, $modal, $log, $translate, Authentication, Shelves) {
 		$scope.authentication = Authentication;
 		$scope.shelves = Shelves.query();
 
 		$scope.data = {
-			shelves: []
+			shelves: [],
+			alert: null
 		};
 
 		// Create new Book
@@ -26,6 +27,15 @@ angular.module('books').controller('BooksController', ['$scope', '$stateParams',
 				},
 					function(response) {
 						$scope.find();
+
+						// TODO: service for alerts
+						$translate('Book has been created.').then(function (alert) {
+					    $scope.data.alert = alert;
+
+					    $timeout(function() {
+		            $scope.data.alert = null;
+		          }, 3000);
+					  });
 					},
 					function(errorResponse) {
 						$scope.error = errorResponse.data.message;
@@ -38,6 +48,14 @@ angular.module('books').controller('BooksController', ['$scope', '$stateParams',
 			data.shelf.$deleteBook({ 'bookId': data._id},
 				function(response) {
 					$scope.find();
+					// TODO: service for alerts
+					$translate('Book has been deleted.').then(function (alert) {
+				    $scope.data.alert = alert;
+
+				    $timeout(function() {
+	            $scope.data.alert = null;
+	          }, 3000);
+				  });
 				},
 				function(errorResponse) {
 					$scope.error = errorResponse.data.message;
@@ -75,6 +93,15 @@ angular.module('books').controller('BooksController', ['$scope', '$stateParams',
 						},
 						function(response) {
 							$scope.find();
+
+							// TODO: service for alerts
+							$translate('Book has been updated.').then(function (alert) {
+						    $scope.data.alert = alert;
+
+						    $timeout(function() {
+			            $scope.data.alert = null;
+			          }, 3000);
+						  });
 						},
 						function(errorResponse) {
 							$scope.error = errorResponse.data.message;

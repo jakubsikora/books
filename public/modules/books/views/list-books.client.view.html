@@ -9,7 +9,7 @@
                 <input type="text"
                        class="form-control"
                        ng-model="searchText"
-                       placeholder="Search...">
+                       placeholder="{{ 'Search your books...' | translate }}">
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="button">{{ 'Go!' | translate }}</button>
                 </span>
@@ -24,9 +24,13 @@
     </div>
 
     <div class="row list-buffer">
+        <div class="alert alert-success" role="alert" ng-if="data.alert">{{ data.alert }}</div>
         <div class="col-xs-12 col-sm-12" data-ng-repeat="shelf in data.shelves">
             <div class="panel panel-default">
-                <div class="panel-heading uppercase">{{ shelf.name }}</div>
+                <div class="panel-heading uppercase bookshelf-head">
+                    {{ shelf.name }}
+                    <span class="label label-info shelf-description">{{ shelf.description | translate }}</span></small>
+                </div>
                 <div class="panel-body">
                     <div class="list-group">
                         <div class="col-xs-12 col-sm-12 list-group-item" data-ng-repeat="book in shelf.books | filter:searchText">

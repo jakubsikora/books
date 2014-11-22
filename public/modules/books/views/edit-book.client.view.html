@@ -58,7 +58,7 @@
                     <label class="col-sm-3 control-label" for="name">{{ 'Select shelf' | translate }}</label>
                     <div class="col-sm-9">
                         <select ng-model="formData.shelf"
-                                ng-options="shelf as shelf.name for shelf in shelves track by shelf._id"
+                                ng-options="shelf as (shelf.name | uppercase) for shelf in shelves track by shelf._id"
                                 class="form-control"
                                 required></select>
                     </div>
@@ -79,7 +79,7 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok(formData)">{{ 'Update &amp; Close' | translate }}</button>
-        <button class="btn btn-warning" ng-click="cancel()">{{ 'Cancel' | translate }}</button>
+        <button class="btn btn-success" ng-click="ok(formData)">{{ 'Update &amp; Close' | translate }}</button>
+        <button class="btn btn-danger" ng-click="cancel()">{{ 'Cancel' | translate }}</button>
     </div>
 </section>

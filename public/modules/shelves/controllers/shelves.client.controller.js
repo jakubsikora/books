@@ -1,12 +1,13 @@
 'use strict';
 
 // Shelves controller
-angular.module('shelves').controller('ShelvesController', ['$scope', '$stateParams', '$location', '$modal', '$log', '$translate', 'Authentication', 'Shelves',
-	function($scope, $stateParams, $location, $modal, $log, $translate, Authentication, Shelves ) {
+angular.module('shelves').controller('ShelvesController', ['$scope', '$timeout',  '$stateParams', '$location', '$modal', '$log', '$translate', 'Authentication', 'Shelves',
+	function($scope, $timeout, $stateParams, $location, $modal, $log, $translate, Authentication, Shelves ) {
 		$scope.authentication = Authentication;
 
 		$scope.data = {
-			shelves: []
+			shelves: [],
+			alert: null
 		};
 
 		// Create new Shelf
@@ -19,6 +20,15 @@ angular.module('shelves').controller('ShelvesController', ['$scope', '$statePara
 			// Redirect after save
 			shelf.$save(function(response) {
 				$scope.find();
+				// TODO: service for alerts
+				$translate('Shelf has been created.').then(function (alert) {
+			    $scope.data.alert = alert;
+
+			    $timeout(function() {
+            $scope.data.alert = null;
+          }, 3000);
+			  });
+
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
@@ -33,6 +43,15 @@ angular.module('shelves').controller('ShelvesController', ['$scope', '$statePara
 				}
 
 				shelf.$remove();
+
+				// TODO: service for alerts
+				$translate('Shelf has been deleted.').then(function (alert) {
+			    $scope.data.alert = alert;
+
+			    $timeout(function() {
+            $scope.data.alert = null;
+          }, 3000);
+			  });
 
 				for (var i in $scope.data.shelves ) {
 					if ($scope.data.shelves [i] === shelf ) {
@@ -59,6 +78,15 @@ angular.module('shelves').controller('ShelvesController', ['$scope', '$statePara
 
 			shelf.$update(function() {
 				$scope.find();
+
+				// TODO: service for alerts
+				$translate('Shelf has been updated.').then(function (alert) {
+			    $scope.data.alert = alert;
+
+			    $timeout(function() {
+            $scope.data.alert = null;
+          }, 3000);
+			  });
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});

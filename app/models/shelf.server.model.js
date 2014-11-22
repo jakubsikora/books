@@ -34,7 +34,7 @@ var BookSchema = new Schema({
 		trim: true
 	},
 	pageCount: {
-		type: Number,
+		type: String,
 		trim: true
 	},
 	thumbnail: {
@@ -74,6 +74,10 @@ var ShelfSchema = new Schema({
 	default: {
 		type: Boolean,
 		default: false
+	},
+	description: {
+		type: String,
+		trim: true
 	},
 	books: [BookSchema],
 	created: {

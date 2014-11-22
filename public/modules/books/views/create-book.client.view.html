@@ -58,7 +58,7 @@
                     <div class="col-sm-9">
                         <select ng-init="formData.shelf = formData.shelf || shelves[0]"
                                 ng-model="formData.shelf"
-                                ng-options="shelf as shelf.name for shelf in shelves track by shelf._id"
+                                ng-options="shelf as (shelf.name | uppercase) for shelf in shelves track by shelf._id"
                                 class="form-control"
                                 required></select>
                     </div>
@@ -72,14 +72,14 @@
                         <a ng-click="addShelf()" class="btn btn-success btn-sm">{{ 'Add new shelf' | translate }}</a>
                     </div>
                 </div>
-				<div data-ng-show="error" class="text-danger">
+                <div data-ng-show="error" class="text-danger">
 					<strong data-ng-bind="error"></strong>
 				</div>
             </fieldset>
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()">{{ 'Save &amp; Close' | translate }}</button>
-        <button class="btn btn-warning" ng-click="cancel()">{{ 'Cancel' | translate }}</button>
+        <button class="btn btn-success" ng-click="ok()">{{ 'Save &amp; Close' | translate }}</button>
+        <button class="btn btn-danger" ng-click="cancel()">{{ 'Cancel' | translate }}</button>
     </div>
 </section>
