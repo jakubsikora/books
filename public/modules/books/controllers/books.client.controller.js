@@ -25,7 +25,7 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
 					thumbnail: data.thumbnail,
 					coverColour: data.coverColour,
 					fontColour: data.fontColour,
-					genre: data.genre.name
+					genre: data.genre
 				},
 					function(response) {
 						$scope.find();
@@ -116,6 +116,10 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
 
 		// Find a list of Books
 		$scope.find = function() {
+			// Shelves.readBooks().$promise.then(function(books) {
+			// 	$scope.data.books = books;
+			// });
+
 			Shelves.query().$promise.then(function(shelves) {
       	$scope.data.shelves = shelves;
     	});

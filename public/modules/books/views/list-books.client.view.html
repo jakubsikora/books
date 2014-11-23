@@ -25,30 +25,24 @@
 
     <div class="row list-buffer">
         <div class="alert alert-success" role="alert" ng-if="data.alert">{{ data.alert }}</div>
-        <div class="col-xs-12 col-sm-12" data-ng-repeat="shelf in data.shelves">
-            <div class="panel panel-default">
-                <div class="panel-heading uppercase bookshelf-head">
-                    {{ shelf.name | translate }}
-                    <span class="label label-info shelf-description">{{ shelf.description | translate }}</span></small>
-                </div>
-                <div class="panel-body">
-                    <div class="list-group">
-                        <div class="col-xs-12 col-sm-12 list-group-item" data-ng-repeat="book in shelf.books | filter:searchText">
-                            <div class="pull-left">
-                                <span class="list-group-item-text">
-                                    <strong class="uppercase">{{ book.author }}: </strong>
-                                    <em>{{ book.title }}</em>
-                                </span>
-                            </div>
-                            <div class="pull-right">
-                                <button class="btn btn-info btn-sm" ng-click="modalUpdate('lg', book)">
-                                    <span class="glyphicon glyphicon-pencil"></span> {{ 'Edit' | translate }}
-                                </button>
-                                <button class="btn btn-danger btn-sm" ng-click="modalDelete('lg', shelf, book)">
-                                    <span class="glyphicon glyphicon-trash"></span> {{ 'Delete' | translate }}
-                                </button>
-                            </div>
-                        </div>
+        <div class="list-group">
+            <div data-ng-repeat="shelf in data.shelves">
+                <div class="col-xs-12 col-sm-12 list-group-item" data-ng-repeat="book in shelf.books | filter:searchText">
+                    <div class="pull-left book-list-author-title">
+                        <span class="list-group-item-text">
+                            <strong class="uppercase">{{ book.author }}: </strong>
+                            <em>{{ book.title }}</em>
+                        </span>
+                    </div>
+                    <div class="pull-right book-list-action">
+                        <span class="label label-primary">{{ 'genre' | translate }}: {{ book.genre }}</span>
+                        <span class="label label-default">{{ 'shelf' | translate }}: {{ shelf.name }}</span>
+                        <button class="btn btn-info btn-sm" ng-click="modalUpdate('lg', book)">
+                            <span class="glyphicon glyphicon-pencil"></span> {{ 'Edit' | translate }}
+                        </button>
+                        <button class="btn btn-danger btn-sm" ng-click="modalDelete('lg', shelf, book)">
+                            <span class="glyphicon glyphicon-trash"></span> {{ 'Delete' | translate }}
+                        </button>
                     </div>
                 </div>
             </div>

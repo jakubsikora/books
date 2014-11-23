@@ -7,7 +7,9 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
 	errorHandler = require('./errors'),
 	Shelf = mongoose.model('Shelf'),
-	_ = require('lodash');
+	_ = require('lodash'),
+	extend = require('node.extend');
+
 
 /******************** Shelfs ********************/
 exports.postSignup = function(user, res) {
@@ -210,7 +212,22 @@ exports.readBooks = function(req, res) {
 	Shelf.find({}, {'name': true, 'books': true}).sort('-created').populate('user', 'displayName').exec(function(err, shelves) {
 		shelves.forEach(function(shelf) {
 			shelf.books.forEach(function(book) {
-				allBooks.push(book);
+				// TODO: extend object
+				allBooks.push({
+					genre: book.genre,
+				  pageCount: book.pageCount,
+				  publishedDate: book.publishedDate,
+				  _id: book._id,
+				  description: book.description,
+				  isbn: book.isbn,
+				  thumbnail: book.thumbnail,
+				  created: book.created,
+				  fontColour: book.fontColour,
+				  coverColour: book.coverColour,
+				  author: book.author,
+				  title: book.title,
+				  shelfName: shelf.name
+				});
 			});
 		});
 

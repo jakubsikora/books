@@ -85,5 +85,7 @@
   "default": "domyślna",
   "Select genre": "Wybierz gatunek",
   "New genre": "Nowy gatunek",
-  "Add new genre": "Dodaj nowy gatunek"
+  "Add new genre": "Dodaj nowy gatunek",
+  "genre": "gatunek",
+  "shelf": "regał"
 }

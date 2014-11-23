@@ -85,5 +85,7 @@
   "default": "default",
   "Select genre": "Select genre",
   "New genre": "New genre",
-  "Add new genre": "Add new genre"
+  "Add new genre": "Add new genre",
+  "genre": "genre",
+  "shelf": "shelf"
 }

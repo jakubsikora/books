@@ -61,6 +61,10 @@ ApplicationConfiguration.registerModule('core');
 'use strict';
 
 // Use applicaion configuration module to register a new module
+ApplicationConfiguration.registerModule('genres');
+'use strict';
+
+// Use applicaion configuration module to register a new module
 ApplicationConfiguration.registerModule('shelves');
 'use strict';
 
@@ -106,10 +110,11 @@ angular.module('books').config(['$stateProvider',
 'use strict';
 
 // Books controller
-angular.module('books').controller('BooksController', ['$scope', '$timeout', '$stateParams', '$location', '$modal', '$log', '$translate', 'Authentication', 'Shelves',
-	function($scope, $timeout, $stateParams, $location, $modal, $log, $translate, Authentication, Shelves) {
+angular.module('books').controller('BooksController', ['$scope', '$timeout', '$stateParams', '$location', '$modal', '$log', '$translate', 'Authentication', 'Shelves', 'Genres',
+	function($scope, $timeout, $stateParams, $location, $modal, $log, $translate, Authentication, Shelves, Genres) {
 		$scope.authentication = Authentication;
 		$scope.shelves = Shelves.query();
+		$scope.genres = Genres.query();
 
 		$scope.data = {
 			shelves: [],
@@ -128,7 +133,8 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
 					pageCount: data.pageCount,
 					thumbnail: data.thumbnail,
 					coverColour: data.coverColour,
-					fontColour: data.fontColour
+					fontColour: data.fontColour,
+					genre: data.genre
 				},
 					function(response) {
 						$scope.find();
@@ -194,7 +200,8 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
 							pageCount: data.pageCount,
 							thumbnail: data.thumbnail,
 							coverColour: data.coverColour,
-							fontColour: data.fontColour
+							fontColour: data.fontColour,
+							genre: data.genre
 						},
 						function(response) {
 							$scope.find();
@@ -218,6 +225,10 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
 
 		// Find a list of Books
 		$scope.find = function() {
+			// Shelves.readBooks().$promise.then(function(books) {
+			// 	$scope.data.books = books;
+			// });
+
 			Shelves.query().$promise.then(function(shelves) {
       	$scope.data.shelves = shelves;
     	});
@@ -228,6 +239,17 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
 				$scope.shelves = Shelves.query(function(shelf) {
 					// Preselect shelf with newly created item
 					$scope.formData.shelf = shelf[0];
+				});
+			}, function(errorResponse) {
+				$scope.errorResponse = errorResponse.data.message;
+			});
+		};
+
+		$scope.addGenre = function() {
+			Genres.save({}, {name: $scope.formData.newgenre}, function(response) {
+				$scope.genres = Genres.query(function(genres) {
+					// Preselect genre with newly created item
+					$scope.formData.genre = genres[0];
 				});
 			}, function(errorResponse) {
 				$scope.errorResponse = errorResponse.data.message;
@@ -637,6 +659,90 @@ angular.module('core').service('Menus', [
 
 		//Adding the topbar menu
 		this.addMenu('topbar');
+	}
+]);
+'use strict';
+
+//Setting up route
+angular.module('genres').config(['$stateProvider',
+	function($stateProvider) {}
+]);
+'use strict';
+
+// Genres controller
+angular.module('genres').controller('GenresController', ['$scope', '$stateParams', '$location', 'Authentication', 'Genres',
+	function($scope, $stateParams, $location, Authentication, Genres ) {
+		$scope.authentication = Authentication;
+
+		// Create new Genre
+		$scope.create = function() {
+			// Create new Genre object
+			var genre = new Genres ({
+				name: this.name
+			});
+
+			// Redirect after save
+			genre.$save(function(response) {
+				$location.path('genres/' + response._id);
+
+				// Clear form fields
+				$scope.name = '';
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+		// Remove existing Genre
+		$scope.remove = function( genre ) {
+			if ( genre ) { genre.$remove();
+
+				for (var i in $scope.genres ) {
+					if ($scope.genres [i] === genre ) {
+						$scope.genres.splice(i, 1);
+					}
+				}
+			} else {
+				$scope.genre.$remove(function() {
+					$location.path('genres');
+				});
+			}
+		};
+
+		// Update existing Genre
+		$scope.update = function() {
+			var genre = $scope.genre ;
+
+			genre.$update(function() {
+				$location.path('genres/' + genre._id);
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+		// Find a list of Genres
+		$scope.find = function() {
+			$scope.genres = Genres.query();
+		};
+
+		// Find existing Genre
+		$scope.findOne = function() {
+			$scope.genre = Genres.get({ 
+				genreId: $stateParams.genreId
+			});
+		};
+	}
+]);
+'use strict';
+
+//Genres service used to communicate Genres REST endpoints
+angular.module('genres').factory('Genres', ['$resource',
+	function($resource) {
+		return $resource('genres/:genreId', { genreId: '@_id'
+		}, {
+			update: {
+				method: 'PUT'
+			}
+		});
 	}
 ]);
 'use strict';

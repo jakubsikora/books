@@ -243,3 +243,15 @@ body {
 .flag {
   cursor: pointer;
 }
+
+.book-list-author-title {
+  text-overflow: ellipsis;
+  display: inline-block;
+  text-align: left;
+  width: 60%;
+}
+
+.book-list-action {
+  width: 40%;
+  text-align: right;
+}
