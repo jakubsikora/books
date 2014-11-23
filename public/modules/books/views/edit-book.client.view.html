@@ -6,10 +6,10 @@
         <form class="form-horizontal" name="form.editBookForm">
             <input type="hidden" data-ng-model="formData._id" />
             <fieldset>
-                <div class="form-group required">
+                <div class="form-group">
                     <label class="col-sm-3 control-label" for="isbn">{{ 'ISBN' | translate }}</label>
                     <div class="col-sm-9">
-                        <input type="text" data-ng-model="formData.isbn" id="isbn" class="form-control" placeholder="{{ 'ISBN (10 or 13 chars)' | translate }}" required>
+                        <input type="text" data-ng-model="formData.isbn" id="isbn" class="form-control" placeholder="{{ 'ISBN (10 or 13 chars)' | translate }}">
                     </div>
                 </div>
                 <div class="form-group required">
@@ -52,6 +52,27 @@
                     <label class="col-sm-3 control-label" for="fontColour">{{ 'Font colour' | translate }}</label>
                     <div class="col-sm-2">
                         <input type="color" data-ng-model="formData.fontColour" id="fontColour" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group required">
+                    <label class="col-sm-3 control-label" for="genre">{{ 'Select genre' | translate }}</label>
+                    <div class="col-sm-9">
+                        <select ng-model="formData.genre"
+                                class="form-control">
+                            <option></option>
+                            <option ng-repeat="genre in genres"
+                                    value="{{ genre.name }}"
+                                    ng-selected="{{ genre.name === formData.genre }}">{{ genre.name }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="name">{{ 'or add a new' | translate }}</label>
+                    <div class="col-sm-6">
+                        <input type="text" data-ng-model="formData.newgenre" class="form-control" placeholder="{{ 'New genre' | translate }}">
+                    </div>
+                    <div class="col-sm-3">
+                        <a ng-click="addGenre()" class="btn btn-success btn-sm">{{ 'Add new genre' | translate }}</a>
                     </div>
                 </div>
                 <div class="form-group required">

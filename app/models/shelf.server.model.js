@@ -9,7 +9,6 @@ var mongoose = require('mongoose'),
 var BookSchema = new Schema({
 	isbn: {
 		type: String,
-		required: 'Please fill the book ISBN (no hyphens)',
 		trim: true
 	},
 	title: {
@@ -34,7 +33,7 @@ var BookSchema = new Schema({
 		trim: true
 	},
 	pageCount: {
-		type: String,
+		type: Number,
 		trim: true
 	},
 	thumbnail: {
@@ -49,6 +48,10 @@ var BookSchema = new Schema({
 	fontColour: {
 		type: String,
 		default: '#FFFFFF',
+		trim: true
+	},
+	genre: {
+		type: String,
 		trim: true
 	},
 	created: {

@@ -165,13 +165,15 @@ exports.updateBook = function(req, res) {
 		{ _id: req.params.shelfId, 'books._id': req.params.bookId },
    	{ $set: {
    		'books.$.description': req.query.description || null,
-   		'books.$.isbn': req.query.isbn,
-   		'books.$.pageCount': req.query.pageCount || null,
+   		'books.$.isbn': req.query.isbn || null,
+   		'books.$.pageCount': req.query.pageCount || 0,
    		'books.$.publishedDate': req.query.publishedDate || null,
    		'books.$.fontColour': req.query.fontColour,
    		'books.$.coverColour': req.query.coverColour,
    		'books.$.author': req.query.author,
-   		'books.$.title': req.query.title
+   		'books.$.title': req.query.title,
+   		'books.$.thumbnail': req.query.thumbnail || null,
+   		'books.$.genre': req.query.genre || null
    		}
    	}
    	).exec(function(err, shelf) {

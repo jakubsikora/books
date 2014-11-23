@@ -82,5 +82,8 @@
   "Save": "Zapisz",
   "Delete": "Usuń",
   "Close": "Zamknij",
-  "default": "domyślna"
+  "default": "domyślna",
+  "Select genre": "Wybierz gatunek",
+  "New genre": "Nowy gatunek",
+  "Add new genre": "Dodaj nowy gatunek"
 }

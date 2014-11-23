@@ -75,5 +75,15 @@
   "or": "or",
   "Sign up": "Sign up",
   "Register and start your own library": "Register and start your own library",
-  "First Name": "First Name"
+  "First Name": "First Name",
+  "Last Name": "Last Name",
+  "or Log in": "or Log in",
+  "Signout": "Signout",
+  "Save": "Save",
+  "Delete": "Delete",
+  "Close": "Close",
+  "default": "default",
+  "Select genre": "Select genre",
+  "New genre": "New genre",
+  "Add new genre": "Add new genre"
 }
