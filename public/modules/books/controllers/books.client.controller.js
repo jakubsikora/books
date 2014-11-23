@@ -132,16 +132,16 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
 			});
 		};
 
-		// $scope.addGenre = function() {
-		// 	Genres.save({}, {name: $scope.formData.newgenre}, function(response) {
-		// 		$scope.genres = Genres.query(function(genres) {
-		// 			// Preselect genre with newly created item
-		// 			$scope.formData.genre = genres[0];
-		// 		});
-		// 	}, function(errorResponse) {
-		// 		$scope.errorResponse = errorResponse.data.message;
-		// 	});
-		// };
+		$scope.addGenre = function() {
+			Genres.save({}, {name: $scope.formData.newgenre}, function(response) {
+				$scope.genres = Genres.query(function(genres) {
+					// Preselect genre with newly created item
+					$scope.formData.genre = genres[0];
+				});
+			}, function(errorResponse) {
+				$scope.errorResponse = errorResponse.data.message;
+			});
+		};
 
 		$scope.modalUpdate = function (size, selectedBook) {
 	    var modalInstance = $modal.open({
