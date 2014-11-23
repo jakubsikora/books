@@ -140,7 +140,7 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
 			Genres.save({}, {name: $scope.formData.newgenre}, function(response) {
 				$scope.genres = Genres.query(function(genres) {
 					// Preselect genre with newly created item
-					$scope.formData.genre = genres[0];
+					$scope.formData.genre = genres[0].name;
 				});
 			}, function(errorResponse) {
 				$scope.errorResponse = errorResponse.data.message;
