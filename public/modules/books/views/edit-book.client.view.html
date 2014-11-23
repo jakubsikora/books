@@ -5,11 +5,38 @@
     <div class="modal-body">
         <form class="form-horizontal" name="form.editBookForm">
             <input type="hidden" data-ng-model="formData._id" />
+            <input type="hidden" data-ng-model="formData.thumbnail" />
             <fieldset>
                 <div class="form-group">
                     <label class="col-sm-3 control-label" for="isbn">{{ 'ISBN' | translate }}</label>
-                    <div class="col-sm-9">
-                        <input type="text" data-ng-model="formData.isbn" id="isbn" class="form-control" placeholder="{{ 'ISBN (10 or 13 chars)' | translate }}">
+                    <div class="col-sm-9 book-search">
+                        <div class="input-group">
+                            <input type="text"
+                                   data-ng-model="formData.isbn"
+                                   id="isbn"
+                                   class="form-control"
+                                   placeholder="{{ 'ISBN (10 or 13 chars)' | translate }}">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default"
+                                        type="button"
+                                        ng-click="executeSearch('isbn:')"
+                                        ng-blur="closeSearch($event)">{{ 'Go!' | translate }}</button>
+                            </span>
+                        </div>
+                        <ul class="book-search-results form-group"
+                            ng-show="data.search.books.length > 0 && !data.search.hide" >
+                            <li ng-repeat="book in data.search.books"
+                                class="book-search-results-item form-control"
+                                ng-mousedown="loadBook(book)">
+
+                                <img ng-src="{{ book.volumeInfo.imageLinks.smallThumbnail }}"
+                                     ng-if="book.volumeInfo.imageLinks.smallThumbnail" />
+                                <strong>{{ book.volumeInfo.authors.join(', ') }}: </strong>
+                                <strong>{{ book.volumeInfo.title }}, </strong>
+                                <strong>{{ book.volumeInfo.publishedDate }}</strong>
+                            </li>
+                        </ul>
+                        <span ng-show="data.search.books.length === 0 && data.search.hide === false">{{ 'No books found.' | translate }}</span>
                     </div>
                 </div>
                 <div class="form-group required">

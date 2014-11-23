@@ -1,15 +1,19 @@
 'use strict';
 
 // Books controller
-angular.module('books').controller('BooksController', ['$scope', '$timeout', '$stateParams', '$location', '$modal', '$log', '$translate', 'Authentication', 'Shelves', 'Genres',
-	function($scope, $timeout, $stateParams, $location, $modal, $log, $translate, Authentication, Shelves, Genres) {
+angular.module('books').controller('BooksController', ['$scope', '$timeout', '$stateParams', '$location', '$modal', '$log', '$translate', 'Authentication', 'Shelves', 'Genres', 'BooksAPI',
+	function($scope, $timeout, $stateParams, $location, $modal, $log, $translate, Authentication, Shelves, Genres, BooksAPI) {
 		$scope.authentication = Authentication;
 		$scope.shelves = Shelves.query();
 		$scope.genres = Genres.query();
 
 		$scope.data = {
 			shelves: [],
-			alert: null
+			alert: null,
+			search: {
+				books: [],
+				hide: true
+			}
 		};
 
 		// Create new Book
@@ -249,6 +253,29 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
 	      $log.info('Modal dismissed at: ' + new Date());
 	    });
 	  };
+
+	  $scope.executeSearch = function(subQuery) {
+			BooksAPI.searchBooks(subQuery + $scope.formData.isbn, function (error, data) {
+        if (!error) {
+        	$scope.data.search.hide = false;
+        	$scope.data.search.books = data.items ? data.items : [];
+        }
+	    });
+		};
+
+		$scope.closeSearch = function() {
+			$scope.data.search.hide = true;
+			$scope.data.search.books = [];
+		};
+
+		$scope.loadBook = function(book) {
+			var bookInfo = book.volumeInfo;
+			$scope.formData.title = bookInfo.title || '';
+			$scope.formData.author = bookInfo.authors ? bookInfo.authors.join(', ') : '';
+			$scope.formData.pageCount = bookInfo.pageCount || 0;
+			$scope.formData.publishedDate = bookInfo.publishedDate || '';
+			$scope.formData.thumbnail = bookInfo.imageLinks ? bookInfo.imageLinks.smallThumbnail : '';
+		};
 
 	  // Load books
 	  $scope.find();

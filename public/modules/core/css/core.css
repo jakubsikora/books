@@ -218,3 +218,30 @@ body {
   width: 40%;
   text-align: right;
 }
+
+.book-search {
+  position: relative;
+}
+
+.book-search-results {
+  position: absolute;
+  z-index: 1;
+  padding: 10px;
+  width: 100%;
+  background: #FFF;
+  list-style-type: none;
+}
+
+.book-search-results .book-search-results-item {
+  cursor: pointer;
+  height: 100%;
+}
+
+.book-search-results .book-search-results-item:hover {
+  background: #CCC;
+}
+
+.book-search-results .book-search-results-item img {
+  width: 48px;
+  height: 80px;
+}
