@@ -12,7 +12,8 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
 			alert: null,
 			search: {
 				books: [],
-				hide: true
+				hide: true,
+				start: false
 			}
 		};
 
@@ -152,7 +153,7 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
 		};
 
 		$scope.modalUpdate = function (size, selectedBook) {
-	    var modalInstance = $modal.open({
+			var modalInstance = $modal.open({
 	      templateUrl: 'modules/books/views/edit-book.client.view.html',
 	      controller: function($scope, $modalInstance, book) {
 	      	Shelves.byBook({ bookId: book._id}, function(shelf) {
@@ -255,11 +256,13 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
 	  };
 
 	  $scope.executeSearch = function(subQuery) {
+	  	$scope.data.search.start = true;
 			BooksAPI.searchBooks(subQuery + $scope.formData.isbn, function (error, data) {
         if (!error) {
         	$scope.data.search.hide = false;
         	$scope.data.search.books = data.items ? data.items : [];
         }
+        $scope.data.search.start = false;
 	    });
 		};
 
@@ -275,6 +278,13 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
 			$scope.formData.pageCount = bookInfo.pageCount || 0;
 			$scope.formData.publishedDate = bookInfo.publishedDate || '';
 			$scope.formData.thumbnail = bookInfo.imageLinks ? bookInfo.imageLinks.smallThumbnail : '';
+		};
+
+		$scope.format = function(field) {
+			// TODO:
+			if (field === 'isbn') {
+				$scope.formData[field] = $scope.formData[field].replace(/-/g, '');
+			}
 		};
 
 	  // Load books

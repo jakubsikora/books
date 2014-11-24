@@ -14,12 +14,17 @@
                                    data-ng-model="formData.isbn"
                                    id="isbn"
                                    class="form-control"
-                                   placeholder="{{ 'ISBN (10 or 13 chars)' | translate }}">
+                                   placeholder="{{ 'ISBN (10 or 13 chars)' | translate }}"
+                                   ng-blur="format('isbn')">
+                            <span class="form-control-feedback"
+                                  ng-class="{ 'glyphicon glyphicon-refresh glyphicon-refresh-animate': data.search.start}"></span>
                             <span class="input-group-btn">
                                 <button class="btn btn-default"
                                         type="button"
                                         ng-click="executeSearch('isbn:')"
-                                        ng-blur="closeSearch($event)">{{ 'Go!' | translate }}</button>
+                                        ng-blur="closeSearch($event)">
+                                        {{ 'Go!' | translate }}
+                                </button>
                             </span>
                         </div>
                         <ul class="book-search-results form-group"

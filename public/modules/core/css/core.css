@@ -245,3 +245,13 @@ body {
   width: 48px;
   height: 80px;
 }
+
+.glyphicon-refresh-animate {
+  animation: spin .7s infinite linear;
+  right: 70px;
+}
+
+@keyframes spin {
+  from { transform: scale(1) rotate(0deg);}
+  to { transform: scale(1) rotate(360deg);}
+}
