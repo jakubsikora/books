@@ -193,7 +193,8 @@ body {
   text-align: left;
 }
 
-.shelf-description {
+.shelf-description,
+.shelf-inactive {
   position: relative;
   left: 20px;
   bottom: 1px;

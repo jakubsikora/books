@@ -78,7 +78,7 @@ var ShelfSchema = new Schema({
 		type: Boolean,
 		default: false
 	},
-	visible: {
+	active: {
 		type: Boolean,
 		default: true
 	},

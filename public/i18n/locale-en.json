@@ -1,6 +1,6 @@
 {
   "CURRENT_LANG": "EN",
-  "DEFAULT_DESCRIPTION": "This shelf is designated to put your books aside from your library",
+  "DEFAULT_DESCRIPTION": "This is the system shelf. It cannot be deleted.",
   "1900": "1900",
   "Please fill or required fields": "Please fill or required fields",
   "Book has been created.": "Book has been created.",
@@ -83,5 +83,7 @@
   "Add new genre": "Add new genre",
   "genre": "genre",
   "shelf": "shelf",
-  "No books found.": "No books found."
+  "No books found.": "No books found.",
+  "Active": "Active",
+  "Not active": "Not active"
 }

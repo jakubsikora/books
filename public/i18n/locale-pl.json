@@ -1,6 +1,6 @@
 {
   "CURRENT_LANG": "PL",
-  "DEFAULT_DESCRIPTION": "Ten regał jest przeznaczony dla książek, które zostały odłożone na później",
+  "DEFAULT_DESCRIPTION": "Systemowy regał. Nie może zostać usunięty.",
   "1900": "1900",
   "Please fill or required fields": "Proszę wypełnić wszystkie wymagane pola",
   "Book has been created.": "Książka została dodana.",
@@ -83,5 +83,7 @@
   "Add new genre": "Dodaj nowy gatunek",
   "genre": "gatunek",
   "shelf": "regał",
-  "No books found.": "Nie znaleziono."
+  "No books found.": "Nie znaleziono.",
+  "Active": "Aktywny",
+  "Not active": "Nieaktywny"
 }

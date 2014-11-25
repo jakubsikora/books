@@ -18,20 +18,20 @@
 					<li class="book"
 							ng-repeat="book in flattenBooks"
 							ng-class="{
-								'book-end': book.book_end,
-								'book-placeholder': book.book_placeholder
+								'book-end': book.bookEnd,
+								'book-placeholder': book.bookPlaceholder
 							}"
 							ng-style="{	width: book.size }">
 							<span class='book-spine'
-										ng-if="!book.book_placeholder"
+										ng-if="!book.bookPlaceholder"
 										ng-style="{
 											color: book.fontColour,
 											background: book.coverColour}">
-								<span>{{ book.book_end === false ?  book.author + ': ' : '' }}</span>
-								<span>{{ book.book_end === false ?  book.title : '' }}</span>
+								<span>{{ book.bookEnd === false ?  book.author + ': ' : '' }}</span>
+								<span>{{ book.bookEnd === false ?  book.title : '' }}</span>
 							</span>
 							<span class="book-cover"
-										ng-if="!book.book_placeholder">
+										ng-if="!book.bookPlaceholder">
 								<span class="book-cover-author">{{ book.author }}</span>
 								<span class="book-cover-title">{{ book.title }}</span>
 							</span>
