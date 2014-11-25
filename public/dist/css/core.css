@@ -83,7 +83,7 @@ body {
   height: 25px;
   padding: 5px;
   color: white;
-  font-size: 10px;
+  font-size: 9px;
   -webkit-transform: rotate(89deg) translate(0px, -25px);
       -ms-transform: rotate(89deg) translate(0px, -25px);
           transform: rotate(89deg) translate(0px, -25px);
@@ -97,6 +97,7 @@ body {
   box-shadow: -1px 3px 30px #000;
   text-align: left;
   padding-left: 10px;
+  cursor: pointer;
 }
 
 .book-end .book-spine {
@@ -105,8 +106,8 @@ body {
 }
 
 .book:hover {
-  -webkit-animation: rotateBook 1s forwards;
-          animation: rotateBook 1s forwards;
+  -webkit-animation: rotateBook 0.5s forwards;
+          animation: rotateBook 0.5s forwards;
   z-index: 2;
   text-align: center;
 }
@@ -175,8 +176,8 @@ body {
   }
 
   100% {
-    -webkit-transform: rotate(1deg) translate(0px, -5px) scale(1.3);
-            transform: rotate(1deg) translate(0px, -5px) scale(1.3);
+    -webkit-transform: rotate(1deg) translate(0px, -5px) scale(1.7);
+            transform: rotate(1deg) translate(0px, -5px) scale(1.7);
   }
 
   /*100% {
@@ -191,8 +192,8 @@ body {
   }
 
   100% {
-    -webkit-transform: rotate(1deg) translate(0px, -5px) scale(1.3);
-            transform: rotate(1deg) translate(0px, -5px) scale(1.3);
+    -webkit-transform: rotate(1deg) translate(0px, -5px) scale(1.7);
+            transform: rotate(1deg) translate(0px, -5px) scale(1.7);
   }
 
   /*100% {

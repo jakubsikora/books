@@ -27,8 +27,8 @@
 										ng-style="{
 											color: book.fontColour,
 											background: book.coverColour}">
+								<span>"{{ book.bookEnd === false ?  book.title + '", ' : '' }}</span>
 								<span>{{ book.bookEnd === false ?  book.author + ': ' : '' }}</span>
-								<span>{{ book.bookEnd === false ?  book.title : '' }}</span>
 							</span>
 							<span class="book-cover"
 										ng-if="!book.bookPlaceholder">
