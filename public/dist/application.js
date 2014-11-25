@@ -502,6 +502,7 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 		// This provides Authentication context.
 		$scope.authentication = Authentication;
 
+    // TODO: move active check to the backend
     Shelves.query().$promise.then(function(shelves) {
       $scope.shelves = shelves;
 
@@ -509,8 +510,8 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
       var booksIndex = 0;
 
       angular.forEach(shelves, function(shelf) {
-        angular.forEach(shelf.books, function(book, i) {
-          if (!shelf.default) {
+        if (shelf.active) {
+          angular.forEach(shelf.books, function(book, i) {
             $scope.flattenBooks.push({
               title: book.title,
               author: book.author,
@@ -522,26 +523,26 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
               sizeWidth: randomIntFromInterval(110, 190) + 'px',
               publishedDate: book.publishedDate,
               description: book.description,
-              shelf_name: shelf.name,
-              book_end: false
+              shelfName: shelf.name,
+              bookEnd: false
             });
 
             // Insert book end
             if (shelf.books.length - 1 === i) {
               $scope.flattenBooks.push({
-                book_end: true
+                bookEnd: true
               });
             }
 
             booksIndex++;
-          }
-        });
+          });
+        }
       });
 
       // Fallback
       if (booksIndex === 0) {
         $scope.flattenBooks.push({
-          book_placeholder: true
+          bookPlaceholder: true
         });
       }
     });
