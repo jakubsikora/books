@@ -6,11 +6,11 @@ module.exports = function(app) {
 
 	// Genres Routes
 	app.route('/genres')
-		.get(genres.list)
+		.get(users.requiresLogin, genres.list)
 		.post(users.requiresLogin, genres.create);
 
 	app.route('/genres/:genreId')
-		.get(genres.read)
+		.get(users.requiresLogin, genres.read)
 		.put(users.requiresLogin, genres.hasAuthorization, genres.update)
 		.delete(users.requiresLogin, genres.hasAuthorization, genres.delete);
 

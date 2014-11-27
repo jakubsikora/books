@@ -72,7 +72,7 @@ exports.delete = function(req, res) {
 /**
  * List of Genres
  */
-exports.list = function(req, res) { Genre.find().sort('-created').populate('user', 'displayName').exec(function(err, genres) {
+exports.list = function(req, res) { Genre.find({ 'user': req.user._id }).sort('-created').populate('user', 'displayName').exec(function(err, genres) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
