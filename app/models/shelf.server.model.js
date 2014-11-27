@@ -4,7 +4,8 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-	Schema = mongoose.Schema;
+	Schema = mongoose.Schema,
+	GenreSchema = require('mongoose').model('Genre').schema;
 
 var BookSchema = new Schema({
 	isbn: {
@@ -50,10 +51,7 @@ var BookSchema = new Schema({
 		default: '#FFFFFF',
 		trim: true
 	},
-	genre: {
-		type: String,
-		trim: true
-	},
+	genre: [GenreSchema],
 	created: {
 		type: Date,
 		default: Date.now

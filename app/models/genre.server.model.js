@@ -13,7 +13,7 @@ var GenreSchema = new Schema({
 	name: {
 		type: String,
 		default: '',
-		required: 'Please fill Genre name',
+		required: 'Please fill the genre name',
 		trim: true
 	},
 	created: {

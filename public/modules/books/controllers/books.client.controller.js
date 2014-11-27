@@ -20,7 +20,7 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
 		// Create new Book
 		$scope.create = function(data) {
 			Shelves.get({ shelfId: data.shelf._id }).$promise.then(function(shelf) {
-				shelf.$createBook({
+				var book = {
 					isbn: data.isbn,
 					title: data.title,
 					author: data.author,
@@ -30,8 +30,10 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
 					thumbnail: data.thumbnail,
 					coverColour: data.coverColour,
 					fontColour: data.fontColour,
-					genre: data.genre
-				},
+					genre: data.genre._id
+				};
+
+				shelf.$createBook(book,
 					function(response) {
 						$scope.find();
 
@@ -97,7 +99,7 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
 							thumbnail: data.thumbnail,
 							coverColour: data.coverColour,
 							fontColour: data.fontColour,
-							genre: data.genre
+							genre: data.genre._id
 						},
 						function(response) {
 							$scope.find();
@@ -145,7 +147,7 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
 			Genres.save({}, {name: $scope.formData.newgenre}, function(response) {
 				$scope.genres = Genres.query(function(genres) {
 					// Preselect genre with newly created item
-					$scope.formData.genre = genres[0].name;
+					$scope.formData.genre = genres[0];
 				});
 			}, function(errorResponse) {
 				$scope.errorResponse = errorResponse.data.message;
@@ -159,6 +161,7 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
 	      	Shelves.byBook({ bookId: book._id}, function(shelf) {
 	      		$scope.formData = book;
 						$scope.formData.shelf = shelf[0];
+						$scope.formData.genre = book.genre[0];
 	      	});
 
 	      	$scope.ok = function () {

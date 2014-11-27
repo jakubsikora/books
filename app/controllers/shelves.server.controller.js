@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
 	errorHandler = require('./errors'),
 	Shelf = mongoose.model('Shelf'),
+	Genre = mongoose.model('Genre'),
 	_ = require('lodash'),
 	extend = require('node.extend');
 
@@ -148,45 +149,62 @@ exports.default = function(req, res) { Shelf.findOne({ 'user': req.user._id, def
 /******************** Books ********************/
 exports.createBook = function(req, res) {
 	var shelf = req.shelf;
-	shelf.books.push(req.query);
+	var data = req.query;
 
-	shelf.save(function(err) {
-		if (err) {
-			console.log('err', err);
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(shelf);
-		}
+	Genre.findById(req.query.genre).exec(function(err, genre) {
+		shelf.books.push({
+			isbn: data.isbn,
+			title: data.title,
+			author: data.author,
+			publishedDate: data.publishedDate,
+			description: data.description,
+			pageCount: data.pageCount,
+			thumbnail: data.thumbnail,
+			coverColour: data.coverColour,
+			fontColour: data.fontColour,
+			genre: [genre]
+		});
+
+		shelf.save(function(err) {
+			if (err) {
+				console.log('error', err);
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			} else {
+				res.jsonp(shelf);
+			}
+		});
 	});
 };
 
 exports.updateBook = function(req, res) {
-	Shelf.update(
-		{ _id: req.params.shelfId, 'books._id': req.params.bookId },
-   	{ $set: {
-   		'books.$.description': req.query.description || null,
-   		'books.$.isbn': req.query.isbn || null,
-   		'books.$.pageCount': req.query.pageCount || 0,
-   		'books.$.publishedDate': req.query.publishedDate || null,
-   		'books.$.fontColour': req.query.fontColour,
-   		'books.$.coverColour': req.query.coverColour,
-   		'books.$.author': req.query.author,
-   		'books.$.title': req.query.title,
-   		'books.$.thumbnail': req.query.thumbnail || null,
-   		'books.$.genre': req.query.genre || null
-   		}
-   	}
-   	).exec(function(err, shelf) {
-		if (err) {
-			console.log(err);
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(shelf);
-		}
+	Genre.findById(req.query.genre).exec(function(err, genre) {
+		Shelf.update(
+			{ _id: req.params.shelfId, 'books._id': req.params.bookId },
+	   	{ $set: {
+	   		'books.$.description': req.query.description || null,
+	   		'books.$.isbn': req.query.isbn || null,
+	   		'books.$.pageCount': req.query.pageCount || 0,
+	   		'books.$.publishedDate': req.query.publishedDate || null,
+	   		'books.$.fontColour': req.query.fontColour,
+	   		'books.$.coverColour': req.query.coverColour,
+	   		'books.$.author': req.query.author,
+	   		'books.$.title': req.query.title,
+	   		'books.$.thumbnail': req.query.thumbnail || null,
+	   		'books.$.genre': [genre]
+	   		}
+	   	}
+	   	).exec(function(err, shelf) {
+			if (err) {
+				console.log(err);
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			} else {
+				res.jsonp(shelf);
+			}
+		});
 	});
 };
 
