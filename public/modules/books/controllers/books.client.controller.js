@@ -89,7 +89,6 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
 						// Create book in the shelf
 						$scope.create(data);
 					} else {
-						console.log('data', data);
 						shelf.$updateBook({ 'bookId': data._id,
 							isbn: data.isbn,
 							title: data.title,
@@ -148,9 +147,7 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
 			Genres.save({}, {name: $scope.formData.newgenre}, function(response) {
 				$scope.genres = Genres.query(function(genres) {
 					// Preselect genre with newly created item
-					console.log('genres', genres);
 					$scope.formData.genre[0] = genres[0];
-					console.log('$scope.formData', $scope.formData);
 				});
 			}, function(errorResponse) {
 				$scope.errorResponse = errorResponse.data.message;
