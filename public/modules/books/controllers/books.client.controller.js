@@ -30,7 +30,7 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
 					thumbnail: data.thumbnail,
 					coverColour: data.coverColour,
 					fontColour: data.fontColour,
-					genre: data.genre._id
+					genre: data.genre[0]._id
 				};
 
 				shelf.$createBook(book,
@@ -99,7 +99,7 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
 							thumbnail: data.thumbnail,
 							coverColour: data.coverColour,
 							fontColour: data.fontColour,
-							genre: data.genre._id
+							genre: data.genre[0]._id
 						},
 						function(response) {
 							$scope.find();
@@ -161,7 +161,6 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
 	      	Shelves.byBook({ bookId: book._id}, function(shelf) {
 	      		$scope.formData = book;
 						$scope.formData.shelf = shelf[0];
-						$scope.formData.genre = book.genre[0];
 	      	});
 
 	      	$scope.ok = function () {

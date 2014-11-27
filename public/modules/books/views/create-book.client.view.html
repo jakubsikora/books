@@ -88,8 +88,7 @@
                 <div class="form-group required">
                     <label class="col-sm-3 control-label" for="genre">{{ 'Select genre' | translate }}</label>
                     <div class="col-sm-9">
-                        <select ng-init="formData.genre = formData.genre || genre[0]"
-                                ng-model="formData.genre"
+                        <select ng-model="formData.genre[0]"
                                 ng-options="genre as ( genre.name | translate | uppercase) for genre in genres track by genre._id"
                                 class="form-control"
                                 required></select>
