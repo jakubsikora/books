@@ -100,7 +100,6 @@ exports.delete = function(req, res) {
  * List of Shelves
  */
 exports.list = function(req, res) { Shelf.find({ 'user': req.user._id }).sort('-created').populate('user', 'displayName').exec(function(err, shelves) {
-		console.log(req.user._id);
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
@@ -134,7 +133,6 @@ exports.shelfByID = function(req, res, next, id) { Shelf.findById(id).populate('
 };
 
 exports.default = function(req, res) { Shelf.findOne({ 'user': req.user._id, default: true }).populate('user', 'displayName').exec(function(err, shelf) {
-		console.log(err);
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
@@ -167,7 +165,6 @@ exports.createBook = function(req, res) {
 
 		shelf.save(function(err) {
 			if (err) {
-				console.log('error', err);
 				return res.status(400).send({
 					message: errorHandler.getErrorMessage(err)
 				});
@@ -197,7 +194,6 @@ exports.updateBook = function(req, res) {
 	   	}
 	   	).exec(function(err, shelf) {
 			if (err) {
-				console.log(err);
 				return res.status(400).send({
 					message: errorHandler.getErrorMessage(err)
 				});
@@ -209,12 +205,10 @@ exports.updateBook = function(req, res) {
 };
 
 exports.deleteBook = function(req, res) {
-	console.log(req.params);
 	Shelf.update(
 		{ _id: req.params.shelfId },
 		{ $pull: { 'books': { '_id': req.params.bookId }}}).exec(function(err, shelf) {
 		if (err) {
-			console.log(err);
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});

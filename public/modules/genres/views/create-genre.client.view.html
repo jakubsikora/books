@@ -1,0 +1,24 @@
+<section data-ng-controller="GenresController">
+    <div class="modal-header">
+        <h3 class="modal-title">{{ 'New Book Genre' | translate }}</h3>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" name="form.createGenreForm">
+            <fieldset>
+                <div class="form-group required">
+                    <label class="col-sm-3 control-label" for="name">{{ 'Name' | translate }}</label>
+                    <div class="col-sm-9">
+                        <input type="text" data-ng-model="formData.name"  name="name" id="name" class="form-control" placeholder="{{ 'Genre name' | translate }}" required>
+                    </div>
+                </div>
+                <div data-ng-show="error" class="text-danger">
+                    <strong data-ng-bind="error"></strong>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-success" ng-click="ok()" >{{ 'Save' | translate }} &amp; {{ 'Close' | translate }}</button>
+        <button class="btn btn-danger" ng-click="cancel()">{{ 'Cancel' | translate }}</button>
+    </div>
+</section>

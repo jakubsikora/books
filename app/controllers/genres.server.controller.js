@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors'),
 	Genre = mongoose.model('Genre'),
+	Shelf = mongoose.model('Shelf'),
 	_ = require('lodash');
 
 /**
@@ -37,7 +38,7 @@ exports.read = function(req, res) {
  * Update a Genre
  */
 exports.update = function(req, res) {
-	var genre = req.genre ;
+	var genre = req.genre;
 
 	genre = _.extend(genre , req.body);
 
@@ -47,6 +48,26 @@ exports.update = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
+			// Update all the books
+			// TODO: find cleaner solution
+			Shelf.find({books: {$not: {$size: 0}}}, {'books' : 1}).exec(function(err, shelves) {
+				shelves.forEach(function(shelf) {
+					shelf.books.forEach(function(book) {
+						if (JSON.stringify(book.genre[0]._id) === JSON.stringify(genre._id)) {
+							book.genre[0].name = genre.name;
+						}
+					});
+
+					shelf.save(function(err) {
+						if (err) {
+							return res.status(400).send({
+								message: errorHandler.getErrorMessage(err)
+							});
+						}
+					});
+				});
+			});
+
 			res.jsonp(genre);
 		}
 	});
@@ -56,7 +77,7 @@ exports.update = function(req, res) {
  * Delete an Genre
  */
 exports.delete = function(req, res) {
-	var genre = req.genre ;
+	var genre = req.genre;
 
 	genre.remove(function(err) {
 		if (err) {
@@ -64,6 +85,26 @@ exports.delete = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
+			// Update all the books
+			// TODO: find cleaner solution
+			Shelf.find({books: {$not: {$size: 0}}}, {'books' : 1}).exec(function(err, shelves) {
+				shelves.forEach(function(shelf) {
+					shelf.books.forEach(function(book) {
+						if (JSON.stringify(book.genre[0]._id) === JSON.stringify(genre._id)) {
+							book.genre.splice(0,1);
+						}
+					});
+
+					shelf.save(function(err) {
+						if (err) {
+							return res.status(400).send({
+								message: errorHandler.getErrorMessage(err)
+							});
+						}
+					});
+				});
+			});
+
 			res.jsonp(genre);
 		}
 	});
@@ -80,6 +121,29 @@ exports.list = function(req, res) { Genre.find({ 'user': req.user._id }).sort('-
 		} else {
 			res.jsonp(genres);
 		}
+	});
+};
+
+exports.getSize = function(req, res) {
+	var genresSize = [];
+	var counter = {};
+
+	// TODO: find cleaner solution
+	Shelf.find({books: {$not: {$size: 0}}}, {'books' : 1}).exec(function(err, shelves) {
+		shelves.forEach(function(shelf) {
+			shelf.books.forEach(function(book) {
+				if (book.genre.length > 0) {
+					genresSize.push(book.genre[0]._id);
+				}
+	    });
+		});
+
+		genresSize.forEach(function(obj) {
+			var key = obj;
+	    counter[key]= (counter[key] || 0) + 1;
+		});
+
+		res.jsonp(counter);
 	});
 };
 

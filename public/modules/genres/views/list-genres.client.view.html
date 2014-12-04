@@ -1,0 +1,52 @@
+<section data-ng-controller="GenresController">
+    <div class="page-header">
+        <h1>{{ 'Book genres' | translate }}</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-8">
+            <div class="input-group input-group-lg">
+                <input type="text"
+                       class="form-control"
+                       ng-model="searchText"
+                       placeholder="{{ 'Search your book genres...' | translate }}">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">{{ 'Go!' | translate }}</button>
+                </span>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-4" text-center>
+            <button type="button" class="btn btn-lg btn-success text-center" ng-click="modalCreate('lg')">
+                <span class="glyphicon glyphicon-th-list"></span> {{ 'New Book Genre' | translate }}
+            </button>
+        </div>
+    </div>
+    <div class="row list-buffer">
+        <div class="alert alert-success" role="alert" ng-if="data.alert">{{ data.alert }}</div>
+        <div class="list-group">
+            <div class="col-xs-12 col-sm-12 list-group-item"
+                  ng-repeat="genre in data.genres | filter:searchText">
+                <div class="pull-left">
+                    <span class="list-group-item-text">
+                        <strong class="uppercase">{{ genre.name | translate }}</strong>
+                    </span>
+                </div>
+
+                <div class="pull-right number-of-books">
+                    <small>{{ 'Number of books' | translate }}</small>
+                    <span class="badge">{{ data.sizes[genre._id] || 0 }}</span>
+                </div>
+
+                <div class="pull-right" ng-if="!shelf.default">
+                    <button class="btn btn-info btn-sm" ng-click="modalUpdate('lg', genre)">
+                        <span class="glyphicon glyphicon-pencil"></span> {{ 'Edit' | translate }}
+                    </button>
+                    <button class="btn btn-danger btn-sm" ng-click="modalDelete('lg', genre)">
+                        <span class="glyphicon glyphicon-trash"></span> {{ 'Delete' | translate }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

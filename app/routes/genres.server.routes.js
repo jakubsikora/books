@@ -9,6 +9,9 @@ module.exports = function(app) {
 		.get(users.requiresLogin, genres.list)
 		.post(users.requiresLogin, genres.create);
 
+	app.route('/genres/size')
+		.get(users.requiresLogin, genres.getSize);
+
 	app.route('/genres/:genreId')
 		.get(users.requiresLogin, genres.read)
 		.put(users.requiresLogin, genres.hasAuthorization, genres.update)
