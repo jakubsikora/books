@@ -143,7 +143,7 @@ module.exports = function(grunt) {
 		    lang: ['en', 'pl'],
 		    dest: 'tmp',
 		    defaultLang: 'en',
-		    safe: true
+		    safeMode: true
 		  }
 		},
 		autoprefixer: {
