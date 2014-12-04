@@ -92,18 +92,6 @@ angular.module('books').config(['$stateProvider',
 		state('listBooks', {
 			url: '/books',
 			templateUrl: 'modules/books/views/list-books.client.view.html'
-		}).
-		state('createBook', {
-			url: '/books/create',
-			templateUrl: 'modules/books/views/create-book.client.view.html'
-		}).
-		state('viewBook', {
-			url: '/books/:bookId',
-			templateUrl: 'modules/books/views/view-book.client.view.html'
-		}).
-		state('editBook', {
-			url: '/books/:bookId/edit',
-			templateUrl: 'modules/books/views/edit-book.client.view.html'
 		});
 	}
 ]);
@@ -726,71 +714,206 @@ angular.module('core').service('Menus', [
 
 //Setting up route
 angular.module('genres').config(['$stateProvider',
-	function($stateProvider) {}
+	function($stateProvider) {
+    $stateProvider.
+      state('listGenres', {
+        url: '/genres',
+        templateUrl: 'modules/genres/views/list-genres.client.view.html'
+      });
+  }
 ]);
 'use strict';
 
 // Genres controller
-angular.module('genres').controller('GenresController', ['$scope', '$stateParams', '$location', 'Authentication', 'Genres',
-	function($scope, $stateParams, $location, Authentication, Genres ) {
+angular.module('genres').controller('GenresController', ['$scope', '$stateParams', '$location', '$translate', '$timeout', '$modal', '$log', 'Authentication', 'Genres',
+	function($scope, $stateParams, $location, $translate, $timeout, $modal, $log, Authentication, Genres ) {
 		$scope.authentication = Authentication;
 
+		$scope.data = {
+			genres: [],
+			alert: null,
+			size: {}
+		};
+
 		// Create new Genre
-		$scope.create = function() {
+		$scope.create = function(data) {
 			// Create new Genre object
 			var genre = new Genres ({
-				name: this.name
+				name: data.name
 			});
 
 			// Redirect after save
 			genre.$save(function(response) {
-				$location.path('genres/' + response._id);
+				$scope.find();
+				// TODO: service for alerts
+				$translate('Book genre has been created.').then(function (alert) {
+			    $scope.data.alert = alert;
 
-				// Clear form fields
-				$scope.name = '';
+			    $timeout(function() {
+            $scope.data.alert = null;
+          }, 3000);
+			  });
+
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
 		};
 
 		// Remove existing Genre
-		$scope.remove = function( genre ) {
-			if ( genre ) { genre.$remove();
+		$scope.remove = function(genre) {
+			if (genre) {
+				genre.$remove();
 
-				for (var i in $scope.genres ) {
-					if ($scope.genres [i] === genre ) {
-						$scope.genres.splice(i, 1);
+				// TODO: service for alerts
+				$translate('Book genre has been deleted.').then(function (alert) {
+			    $scope.data.alert = alert;
+
+			    $timeout(function() {
+            $scope.data.alert = null;
+          }, 3000);
+			  });
+
+				for (var i in $scope.data.genres ) {
+					if ($scope.data.genres [i] === genre ) {
+						$scope.data.genres.splice(i, 1);
 					}
 				}
-			} else {
-				$scope.genre.$remove(function() {
-					$location.path('genres');
-				});
 			}
 		};
 
 		// Update existing Genre
-		$scope.update = function() {
-			var genre = $scope.genre ;
+		$scope.update = function(updatedGenre) {
+			var shelf = updatedGenre;
 
-			genre.$update(function() {
-				$location.path('genres/' + genre._id);
+			shelf.$update(function() {
+				$scope.find();
+
+				// TODO: service for alerts
+				$translate('Shelf has been updated.').then(function (alert) {
+			    $scope.data.alert = alert;
+
+			    $timeout(function() {
+            $scope.data.alert = null;
+          }, 3000);
+			  });
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
 		};
 
-		// Find a list of Genres
-		$scope.find = function() {
-			$scope.genres = Genres.query();
-		};
-
 		// Find existing Genre
 		$scope.findOne = function() {
-			$scope.genre = Genres.get({ 
+			$scope.genre = Genres.get({
 				genreId: $stateParams.genreId
 			});
 		};
+
+		$scope.modalCreate = function (size) {
+	    var modalInstance = $modal.open({
+	      templateUrl: 'modules/genres/views/create-genre.client.view.html',
+	      controller: ["$scope", "$modalInstance", function($scope, $modalInstance) {
+	      	$scope.formData = {};
+
+	      	$scope.ok = function () {
+	      		if (this.form.createGenreForm.$valid) {
+	      			$modalInstance.close($scope.formData);
+      			} else {
+      				$translate('Please fill or required fields').then(function (requiredFields) {
+						    $scope.error = requiredFields;
+						  });
+      			}
+				  };
+
+				  $scope.cancel = function () {
+				    $modalInstance.dismiss('cancel');
+				  };
+	      }],
+	      size: size
+	    });
+
+	    modalInstance.result.then(function (formData) {
+    		$scope.create(formData);
+	    }, function () {
+	      $log.info('Modal dismissed at: ' + new Date());
+	    });
+	  };
+
+		$scope.modalUpdate = function (size, selectedGenre) {
+	    var modalInstance = $modal.open({
+	      templateUrl: 'modules/genres/views/edit-genre.client.view.html',
+	      controller: ["$scope", "$modalInstance", "genre", function($scope, $modalInstance, genre) {
+	      	$scope.formData = genre;
+
+	      	$scope.ok = function () {
+				    if (this.form.updateGenreForm.$valid) {
+	      			$modalInstance.close($scope.formData);
+      			} else {
+      				$translate('Please fill or required fields').then(function (requiredFields) {
+						    $scope.error = requiredFields;
+						  });
+      			}
+				  };
+
+				  $scope.cancel = function () {
+				    $modalInstance.dismiss('cancel');
+				  };
+	      }],
+	      size: size,
+	      resolve: {
+	        genre: function () {
+	        	return selectedGenre;
+	        }
+	      }
+	    });
+
+	    modalInstance.result.then(function (formData) {
+	      $scope.update(formData);
+	    }, function () {
+	      $log.info('Modal dismissed at: ' + new Date());
+	    });
+	  };
+
+	  $scope.modalDelete = function (size, selectedGenre) {
+	    var modalInstance = $modal.open({
+	      templateUrl: 'modules/genres/views/delete-genre.client.view.html',
+	      controller: ["$scope", "$modalInstance", "genre", function($scope, $modalInstance, genre) {
+	      	$scope.formData = genre;
+
+	      	$scope.ok = function () {
+				    $modalInstance.close($scope.formData);
+				  };
+
+				  $scope.cancel = function () {
+				    $modalInstance.dismiss('cancel');
+				  };
+	      }],
+	      size: size,
+	      resolve: {
+	        genre: function () {
+	          return selectedGenre;
+	        }
+	      }
+	    });
+
+	    modalInstance.result.then(function (formData) {
+	    	$scope.remove(formData);
+	    }, function () {
+	      $log.info('Modal dismissed at: ' + new Date());
+	    });
+	  };
+
+		// Find a list of Genres
+		$scope.find = function() {
+			Genres.query().$promise.then(function(genres) {
+				$scope.data.genres = genres;
+
+				Genres.getSize().$promise.then(function(sizes) {
+					$scope.data.sizes = sizes;
+				});
+			});
+		};
+
+		$scope.find();
 	}
 ]);
 'use strict';
@@ -802,7 +925,11 @@ angular.module('genres').factory('Genres', ['$resource',
 		}, {
 			update: {
 				method: 'PUT'
-			}
+			},
+      getSize: {
+        url: '/genres/size',
+        method: 'GET'
+      },
 		});
 	}
 ]);
@@ -827,18 +954,6 @@ angular.module('shelves').config(['$stateProvider',
 		state('listShelves', {
 			url: '/shelves',
 			templateUrl: 'modules/shelves/views/list-shelves.client.view.html'
-		}).
-		state('createShelf', {
-			url: '/shelves/create',
-			templateUrl: 'modules/shelves/views/create-shelf.client.view.html'
-		}).
-		state('viewShelf', {
-			url: '/shelves/:shelfId',
-			templateUrl: 'modules/shelves/views/view-shelf.client.view.html'
-		}).
-		state('editShelf', {
-			url: '/shelves/:shelfId/edit',
-			templateUrl: 'modules/shelves/views/edit-shelf.client.view.html'
 		});
 	}
 ]);
