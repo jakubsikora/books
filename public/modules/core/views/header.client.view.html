@@ -33,10 +33,19 @@
 					</ul> -->
 
           <ul class="nav navbar-nav navbar-left" data-ng-if="menu.shouldRender(authentication.user);">
-            <li ui-route="/books" ng-class="{active: ($uiRoute)}">
-              <a href="/#!/books">
+            <li ui-route="/books" ng-class="{active: ($uiRoute)}" dropdown="true">
+              <a  class="dropdown-toggle">
                 <span>{{ 'Books' | translate }}</span>
+                <b class="caret"></b>
               </a>
+              <ul class="dropdown-menu">
+                <li ui-route="/books" ng-class="{active: $uiRoute}">
+                  <a href="/#!/books">{{ 'Book list' | translate }}</a>
+                </li>
+                <li ui-route="/genres" ng-class="{active: $uiRoute}">
+                  <a href="/#!/genres">{{ 'Book genres' | translate }}</a>
+                </li>
+              </ul>
             </li>
             <li ui-route="/shelves" ng-class="{active: ($uiRoute)}">
               <a href="/#!/shelves">

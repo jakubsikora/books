@@ -7,7 +7,11 @@ angular.module('genres').factory('Genres', ['$resource',
 		}, {
 			update: {
 				method: 'PUT'
-			}
+			},
+      getSize: {
+        url: '/genres/size',
+        method: 'GET'
+      },
 		});
 	}
 ]);
