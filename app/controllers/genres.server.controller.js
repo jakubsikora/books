@@ -90,8 +90,10 @@ exports.delete = function(req, res) {
 			Shelf.find({books: {$not: {$size: 0}}}, {'books' : 1}).exec(function(err, shelves) {
 				shelves.forEach(function(shelf) {
 					shelf.books.forEach(function(book) {
-						if (JSON.stringify(book.genre[0]._id) === JSON.stringify(genre._id)) {
-							book.genre.splice(0,1);
+						if (book.genre.length > 0) {
+							if (JSON.stringify(book.genre[0]._id) === JSON.stringify(genre._id)) {
+								book.genre.splice(0,1);
+							}
 						}
 					});
 
