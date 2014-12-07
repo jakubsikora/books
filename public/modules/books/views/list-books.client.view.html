@@ -53,8 +53,8 @@
                     </span>
                 </div>
                 <div class="pull-right book-list-action">
-                    <span class="label label-primary">{{ 'genre' | translate }}: {{ book.genre[0].name }}</span>
-                    <span class="label label-default">{{ 'shelf' | translate }}: {{ book.shelf.name | translate }}</span>
+                    <span class="label label-primary uppercase" title="{{ 'genre' | translate }}">{{ book.genre[0].name }}</span>
+                    <span class="label label-default" title="{{ 'shelf' | translate }}">{{ book.shelf.name | translate }}</span>
                     <button class="btn btn-info btn-sm" ng-click="modalUpdate('lg', book)">
                         <span class="glyphicon glyphicon-pencil"></span> {{ 'Edit' | translate }}
                     </button>
