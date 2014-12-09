@@ -1,8 +1,11 @@
 'use strict';
 
 // Books controller
-angular.module('books').controller('BooksController', ['$scope', '$timeout', '$stateParams', '$location', '$modal', '$log', '$translate', 'Authentication', 'Shelves', 'Genres', 'BooksAPI',
-  function($scope, $timeout, $stateParams, $location, $modal, $log, $translate, Authentication, Shelves, Genres, BooksAPI) {
+var bookApp = angular.module('books');
+
+bookApp.controller('BooksController'
+    , function($scope, $timeout, $stateParams, $location, $modal, $log,
+        $translate, $filter, Authentication, Shelves, Genres, BooksAPI) {
     $scope.authentication = Authentication;
     $scope.shelves = Shelves.query();
     $scope.genres = Genres.query();
@@ -10,6 +13,7 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
     $scope.data = {
       shelves: [],
       alert: null,
+      masterBooks: [],
       flattenBooks: [],
       filteredBooks: [],
       search: {
@@ -22,7 +26,32 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
     $scope.pagination = {
       currentPage: 1,
       maxSize: 5,
-      itemsPerPage: 20
+      itemsPerPage: 2
+    };
+
+    $scope.$watchCollection('filter', function(newVal, oldVal) {
+      if (newVal === oldVal) return;
+
+      $scope.pagination.currentPage = 1;
+      $scope.data.flattenBooks = $filter('byGenre')($scope.data.masterBooks, newVal);
+      $scope.pagination.totalItems = $scope.data.flattenBooks.length;
+      $scope.pageChanged();
+    });
+
+    $scope.pageChanged = function() {
+      var begin = (($scope.pagination.currentPage - 1) * $scope.pagination.itemsPerPage)
+        , end = begin + $scope.pagination.itemsPerPage;
+
+      var firstOnPage = 1 + begin;
+      var lastOnPage = firstOnPage + $scope.pagination.itemsPerPage - 1;
+      if (lastOnPage > $scope.data.flattenBooks.length) {
+        lastOnPage = $scope.data.flattenBooks.length;
+      }
+
+      $scope.pagination.firstOnPage = firstOnPage;
+      $scope.pagination.lastOnPage = lastOnPage;
+
+      $scope.data.filteredBooks = $scope.data.flattenBooks.slice(begin, end);
     };
 
     // Create new Book
@@ -136,7 +165,7 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
       var newBook = {};
 
       Shelves.query().$promise.then(function(shelves) {
-        $scope.data.flattenBooks = [];
+        $scope.data.masterBooks = [];
 
         shelves.forEach(function(shelf) {
           if (shelf.books.length > 0) {
@@ -149,31 +178,16 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
               };
 
               angular.extend(newBook, book);
-              $scope.data.flattenBooks.push(newBook);
+              $scope.data.masterBooks.push(newBook);
             });
           }
 
-          $scope.pagination.totalItems = $scope.data.flattenBooks.length;
+          $scope.pagination.totalItems = $scope.data.masterBooks.length;
+          $scope.data.flattenBooks = $scope.data.masterBooks;
         });
 
         $scope.pageChanged();
       });
-    };
-
-    $scope.pageChanged = function() {
-      var begin = (($scope.pagination.currentPage - 1) * $scope.pagination.itemsPerPage)
-        , end = begin + $scope.pagination.itemsPerPage;
-
-      var firstOnPage = 1 + begin;
-      var lastOnPage = firstOnPage + $scope.pagination.itemsPerPage - 1;
-      if (lastOnPage > $scope.data.flattenBooks.length) {
-        lastOnPage = $scope.data.flattenBooks.length;
-      }
-
-      $scope.pagination.firstOnPage = firstOnPage;
-      $scope.pagination.lastOnPage = lastOnPage;
-
-      $scope.data.filteredBooks = $scope.data.flattenBooks.slice(begin, end);
     };
 
     $scope.addShelf = function() {
@@ -332,4 +346,32 @@ angular.module('books').controller('BooksController', ['$scope', '$timeout', '$s
     // Load books
     $scope.find();
   }
-]);
+);
+
+bookApp.filter('byGenre', function () {
+    return function (items, filter) {
+      if (!filter) return items;
+
+      var filteredItems = [];
+
+      items.forEach(function(item) {
+        var skip = false;
+
+        if (filter.genre && filter.genre.name) {
+          if (item.genre[0].name !== filter.genre.name) {
+            skip = true;
+          }
+        }
+
+        if (filter.shelf && filter.shelf.name) {
+          if (item.shelf.name !== filter.shelf.name) {
+            skip = true;
+          }
+        }
+
+        if (!skip) filteredItems.push(item);
+      });
+
+      return filteredItems;
+    };
+});

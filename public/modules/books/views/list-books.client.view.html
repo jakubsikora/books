@@ -24,7 +24,7 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-12 col-sm-12">
+        <div class="col-xs-5 col-sm-5">
             <pagination total-items="pagination.totalItems"
                         ng-model="pagination.currentPage"
                         max-size="pagination.maxSize"
@@ -35,6 +35,20 @@
                         next-text="&rsaquo;"
                         class="pull-left"
                         rotate="false"></pagination>
+        </div>
+
+        <div class="col-xs-4 col-sm-4 form-group filter-pagination">
+            <form class="form-inline">
+                <select ng-model="filter.genre"
+                    ng-options="genre as ( genre.name | translate | uppercase) for genre in genres track by genre._id"
+                    class="form-control input-md"><option value="">{{ 'Genre' | uppercase | translate }}</option></select>
+                <select ng-model="filter.shelf"
+                    ng-options="shelf as ( shelf.name | translate | uppercase) for shelf in shelves track by shelf._id"
+                    class="form-control input-md"><option value="">{{ 'Shelf' | uppercase | translate }}</option></select>
+            </form>
+        </div>
+
+        <div class="col-xs-3 col-sm-3">
             <span class="alert alert-info alert-pagination pull-right">
                 {{ pagination.firstOnPage }} - {{ pagination.lastOnPage }}
                 {{ 'of' | translate }}
@@ -46,7 +60,7 @@
     <div class="row list-buffer">
         <div class="alert alert-success" role="alert" ng-if="data.alert">{{ data.alert }}</div>
         <div class="list-group">
-            <div class="col-xs-12 col-sm-12 list-group-item" data-ng-repeat="book in data.filteredBooks | filter:searchText">
+            <div class="col-xs-12 col-sm-12 list-group-item" data-ng-repeat="book in data.filteredBooks | byGenre">
                 <div class="pull-left book-list-author-title">
                     <span class="list-group-item-text">
                         <strong class="uppercase">{{ book.author }}: </strong>
