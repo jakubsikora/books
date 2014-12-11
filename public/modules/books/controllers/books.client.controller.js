@@ -26,14 +26,19 @@ bookApp.controller('BooksController'
     $scope.pagination = {
       currentPage: 1,
       maxSize: 5,
-      itemsPerPage: 2
+      itemsPerPage: 25
+    };
+
+    $scope.filter = {
+      itemsPerPage: $scope.pagination.itemsPerPage
     };
 
     $scope.$watchCollection('filter', function(newVal, oldVal) {
       if (newVal === oldVal) return;
 
       $scope.pagination.currentPage = 1;
-      $scope.data.flattenBooks = $filter('byGenre')($scope.data.masterBooks, newVal);
+      $scope.pagination.itemsPerPage = $scope.filter.itemsPerPage;
+      $scope.data.flattenBooks = $filter('customFilter')($scope.data.masterBooks, newVal);
       $scope.pagination.totalItems = $scope.data.flattenBooks.length;
       $scope.pageChanged();
     });
@@ -348,14 +353,21 @@ bookApp.controller('BooksController'
   }
 );
 
-bookApp.filter('byGenre', function () {
+bookApp.filter('customFilter', function () {
     return function (items, filter) {
+      var filteredItems = []
+        , query
+        , title
+        , author
+        , skip;
+
       if (!filter) return items;
 
-      var filteredItems = [];
 
       items.forEach(function(item) {
-        var skip = false;
+        skip = false;
+        title = item.title.toUpperCase();
+        author = item.author.toUpperCase();
 
         if (filter.genre && filter.genre.name) {
           if (item.genre[0].name !== filter.genre.name) {
@@ -365,6 +377,14 @@ bookApp.filter('byGenre', function () {
 
         if (filter.shelf && filter.shelf.name) {
           if (item.shelf.name !== filter.shelf.name) {
+            skip = true;
+          }
+        }
+
+        if (filter.query) {
+          query = filter.query.toUpperCase();
+
+          if (!~title.indexOf(query) && !~author.indexOf(query)) {
             skip = true;
           }
         }

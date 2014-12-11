@@ -8,7 +8,7 @@
             <div class="input-group input-group-lg">
                 <input type="text"
                        class="form-control"
-                       ng-model="searchText"
+                       ng-model="filter.query"
                        placeholder="{{ 'Search your books...' | translate }}">
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="button">{{ 'Go!' | translate }}</button>
@@ -24,43 +24,60 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-5 col-sm-5">
-            <pagination total-items="pagination.totalItems"
-                        ng-model="pagination.currentPage"
-                        max-size="pagination.maxSize"
-                        items-per-page="pagination.itemsPerPage"
-                        ng-change="pageChanged()"
-                        num-pages="pagination.numPages"
-                        previous-text="&lsaquo;"
-                        next-text="&rsaquo;"
-                        class="pull-left"
-                        rotate="false"></pagination>
-        </div>
-
-        <div class="col-xs-4 col-sm-4 form-group filter-pagination">
+        <div class="col-xs-9 col-sm-9 pagination-header">
             <form class="form-inline">
-                <select ng-model="filter.genre"
-                    ng-options="genre as ( genre.name | translate | uppercase) for genre in genres track by genre._id"
-                    class="form-control input-md"><option value="">{{ 'Genre' | uppercase | translate }}</option></select>
-                <select ng-model="filter.shelf"
-                    ng-options="shelf as ( shelf.name | translate | uppercase) for shelf in shelves track by shelf._id"
-                    class="form-control input-md"><option value="">{{ 'Shelf' | uppercase | translate }}</option></select>
+                <div class="input-group">
+                    <pagination total-items="pagination.totalItems"
+                                ng-model="pagination.currentPage"
+                                max-size="pagination.maxSize"
+                                items-per-page="pagination.itemsPerPage"
+                                ng-change="pageChanged()"
+                                num-pages="pagination.numPages"
+                                previous-text="&lsaquo;"
+                                next-text="&rsaquo;"
+                                class="pull-left"
+                                rotate="false"></pagination>
+                </div>
+                <div class="input-group">
+                    <select ng-model="filter.genre"
+                        ng-options="genre as ( genre.name | translate | uppercase) for genre in genres track by genre._id"
+                        class="form-control input-md"><option value="">{{ 'All Genres' | uppercase | translate }}</option></select>
+                </div>
+                <div class="input-group">
+                    <select ng-model="filter.shelf"
+                        ng-options="shelf as ( shelf.name | translate | uppercase) for shelf in shelves track by shelf._id"
+                        class="form-control input-md"><option value="">{{ 'All Shelves' | uppercase | translate }}</option></select>
+                </div>
             </form>
         </div>
 
         <div class="col-xs-3 col-sm-3">
-            <span class="alert alert-info alert-pagination pull-right">
-                {{ pagination.firstOnPage }} - {{ pagination.lastOnPage }}
-                {{ 'of' | translate }}
-                {{ pagination.totalItems }} {{ 'books' | translate }}
-            </span>
+            <div class="input-group input-group-md alert-pagination pull-right">
+                <span class="input-group-addon">
+                    {{ pagination.firstOnPage }} - {{ pagination.lastOnPage }}
+                    {{ 'of' | translate }}
+                    {{ pagination.totalItems }} {{ 'books' | translate }}
+                </span>
+                <span class="input-group-addon">
+                    {{ 'per page' | translate }}
+                </span>
+                <select class="form-control"
+                        ng-model="filter.itemsPerPage">
+                    <option value="1">1</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
         </div>
     </div>
 
     <div class="row list-buffer">
         <div class="alert alert-success" role="alert" ng-if="data.alert">{{ data.alert }}</div>
         <div class="list-group">
-            <div class="col-xs-12 col-sm-12 list-group-item" data-ng-repeat="book in data.filteredBooks | byGenre">
+            <div class="col-xs-12 col-sm-12 list-group-item" data-ng-repeat="book in data.filteredBooks | customFilter">
                 <div class="pull-left book-list-author-title">
                     <span class="list-group-item-text">
                         <strong class="uppercase">{{ book.author }}: </strong>
@@ -78,26 +95,6 @@
                     </button>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-xs-12 col-sm-12">
-            <pagination total-items="pagination.totalItems"
-                        ng-model="pagination.currentPage"
-                        max-size="pagination.maxSize"
-                        items-per-page="pagination.itemsPerPage"
-                        ng-change="pageChanged()"
-                        num-pages="pagination.numPages"
-                        previous-text="&lsaquo;"
-                        next-text="&rsaquo;"
-                        class="pull-left"
-                        rotate="false"></pagination>
-            <span class="alert alert-info alert-pagination pull-right">
-                {{ pagination.firstOnPage }} - {{ pagination.lastOnPage }}
-                {{ 'of' | translate }}
-                {{ pagination.totalItems }} {{ 'books' | translate }}
-            </span>
         </div>
     </div>
 </section>
