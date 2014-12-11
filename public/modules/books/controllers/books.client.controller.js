@@ -25,7 +25,7 @@ bookApp.controller('BooksController'
 
     $scope.pagination = {
       currentPage: 1,
-      maxSize: 3,
+      maxSize: 5,
       itemsPerPage: 25
     };
 
