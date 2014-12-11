@@ -303,6 +303,12 @@ body {
 
 .alert-pagination {
   margin: 20px 0;
-  background: #FFF;
-  padding: 6px 12px;
+}
+
+.filter-pagination {
+  margin: 20px 0;
+}
+
+.pagination-header {
+  text-align: left;
 }
