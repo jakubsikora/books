@@ -41,12 +41,12 @@
                 <div class="input-group">
                     <select ng-model="filter.genre"
                         ng-options="genre as ( genre.name | translate | uppercase) for genre in genres track by genre._id"
-                        class="form-control input-md"><option value="">{{ 'All Genres' | uppercase | translate }}</option></select>
+                        class="form-control input-md"><option value="">{{ 'All Genres' | translate | uppercase }}</option></select>
                 </div>
                 <div class="input-group">
                     <select ng-model="filter.shelf"
                         ng-options="shelf as ( shelf.name | translate | uppercase) for shelf in shelves track by shelf._id"
-                        class="form-control input-md"><option value="">{{ 'All Shelves' | uppercase | translate }}</option></select>
+                        class="form-control input-md"><option value="">{{ 'All Shelves' | translate | uppercase }}</option></select>
                 </div>
             </form>
         </div>
