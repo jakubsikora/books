@@ -60,7 +60,7 @@ bookApp.controller('BooksController'
     };
 
     // Create new Book
-    $scope.create = function(data) {
+    $scope.create = function(data, skipAlert) {
       Shelves.get({ shelfId: data.shelf._id }).$promise.then(function(shelf) {
         var book = {
           isbn: data.isbn,
@@ -80,13 +80,15 @@ bookApp.controller('BooksController'
             $scope.find();
 
             // TODO: service for alerts
-            $translate('Book has been created.').then(function (alert) {
-              $scope.data.alert = alert;
+            if (!skipAlert) {
+              $translate('Book has been created.').then(function (alert) {
+                $scope.data.alert = alert;
 
-              $timeout(function() {
-                $scope.data.alert = null;
-              }, 3000);
-            });
+                $timeout(function() {
+                  $scope.data.alert = null;
+                }, 3000);
+              });
+            }
           },
           function(errorResponse) {
             $scope.error = errorResponse.data.message;
@@ -95,19 +97,21 @@ bookApp.controller('BooksController'
     };
 
     // Remove existing Book
-    $scope.remove = function(data) {
+    $scope.remove = function(data, skipAlert) {
       Shelves.get({ shelfId: data.shelf._id }).$promise.then(function(shelf) {
         shelf.$deleteBook({ 'bookId': data._id},
           function(response) {
             $scope.find();
             // TODO: service for alerts
-            $translate('Book has been deleted.').then(function (alert) {
-              $scope.data.alert = alert;
+            if (!skipAlert) {
+              $translate('Book has been deleted.').then(function (alert) {
+                $scope.data.alert = alert;
 
-              $timeout(function() {
-                $scope.data.alert = null;
-              }, 3000);
-            });
+                $timeout(function() {
+                  $scope.data.alert = null;
+                }, 3000);
+              });
+            }
           },
           function(errorResponse) {
             $scope.error = errorResponse.data.message;
@@ -128,10 +132,18 @@ bookApp.controller('BooksController'
             currentData = angular.copy(data);
             currentData.shelf = currentShelf[0];
 
-            $scope.remove(currentData);
+            $scope.remove(currentData, true);
 
             // Create book in the shelf
-            $scope.create(data);
+            $scope.create(data, true);
+
+            $translate('Book has been updated.').then(function (alert) {
+              $scope.data.alert = alert;
+
+              $timeout(function() {
+                $scope.data.alert = null;
+              }, 3000);
+            });
           } else {
             shelf.$updateBook({ 'bookId': data._id,
               isbn: data.isbn,
@@ -187,8 +199,8 @@ bookApp.controller('BooksController'
             });
           }
 
-          $scope.pagination.totalItems = $scope.data.masterBooks.length;
-          $scope.data.flattenBooks = $scope.data.masterBooks;
+          $scope.data.flattenBooks = $filter('customFilter')($scope.data.masterBooks, $scope.filter);
+          $scope.pagination.totalItems = $scope.data.flattenBooks.length;
         });
 
         $scope.pageChanged();
