@@ -21,23 +21,22 @@
 								'book-end': book.bookEnd,
 								'book-placeholder': book.bookPlaceholder
 							}"
-							ng-style="{	width: book.size }">
+							ng-style="{	width: book.sizeWidth }">
 							<span class='book-spine'
 										ng-if="!book.bookPlaceholder"
 										ng-style="{
 											color: book.fontColour,
-											background: book.coverColour}">
+											background: book.coverColour,
+											lineHeight: book.sizeWidth,
+											height: book.sizeWidth }">
 								<span>{{ book.bookEnd === false ? '"' + book.title + '", ' : '' }}</span>
-								<span>{{ book.bookEnd === false ?  book.author + ': ' : '' }}</span>
+								<span>{{ book.bookEnd === false ?  book.author : '' }}</span>
 							</span>
 							<span class="book-cover"
 										ng-if="!book.bookPlaceholder">
 								<span class="book-cover-author">{{ book.author }}</span>
 								<span class="book-cover-title">{{ book.title }}</span>
 							</span>
-							<!-- <div class='book-preview' ng-show='book.book_end === false'>
-								{{ book.title }}
-							</div> -->
 						</li>
 				 </ul>
 			</div>

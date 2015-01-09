@@ -24,8 +24,8 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
               fontColour: book.fontColour,
               coverColour: book.coverColour,
               pageCount: book.pageCount,
-              sizeHeight: '25px',
-              sizeWidth: randomIntFromInterval(110, 190) + 'px',
+              sizeWidth: bookSize(book.pageCount),
+              sizeHeight: randomIntFromInterval(110, 190) + 'px',
               publishedDate: book.publishedDate,
               description: book.description,
               shelfName: shelf.name,
@@ -56,6 +56,20 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
         return Math.floor(Math.random()*(max-min+1)+min);
     };
 
-    //TODO, order, sort, pagination
+    var bookSize = function(pageCount) {
+      var minSize = 15
+        , maxSize = 60
+        , size = 0;
+
+      size = (parseInt(0.1 * pageCount, 10));
+
+      if (size < minSize) {
+        size = minSize;
+      } else if (size > maxSize) {
+        size = maxSize;
+      }
+
+      return size + 'px';
+    };
   }
 ]);

@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-	db: 'mongodb://localhost/books-dev',
+	db: 'mongodb://staging:Staging1!@dogen.mongohq.com:10099/mybooks',
 	app: {
 		title: 'books - Development Environment'
 	},

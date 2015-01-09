@@ -81,12 +81,12 @@ body {
   display: block;
   width: 160px;
   height: 25px;
-  padding: 5px;
+  line-height: 25px;
   color: white;
   font-size: 9px;
-  -webkit-transform: rotate(89deg) translate(0px, -25px);
-      -ms-transform: rotate(89deg) translate(0px, -25px);
-          transform: rotate(89deg) translate(0px, -25px);
+  -webkit-transform: rotate(89deg) translate(0px, -100%);
+      -ms-transform: rotate(89deg) translate(0px, -100%);
+          transform: rotate(89deg) translate(0px, -100%);
   -webkit-transform-origin: 0 0;
       -ms-transform-origin: 0 0;
           transform-origin: 0 0;
@@ -311,4 +311,64 @@ body {
 
 .pagination-header {
   text-align: left;
+}
+
+table {
+    text-shadow: 1px 1px 3px rgba(0,0,0,1);
+}
+
+.table-nowrap {
+  table-layout:fixed;
+}
+
+.table-nowrap th {
+    text-align: center;
+    color: #555;
+    text-shadow: none;
+}
+
+.table-nowrap td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.table-nowrap .author {
+  width: 15%;
+}
+
+.table-nowrap .title {
+  width: 20%;
+}
+
+.table-nowrap .genre {
+  width: 10%;
+}
+
+.table-nowrap .shelf {
+  width: 10%;
+}
+
+.table-nowrap .action {
+  width: 8%;
+}
+
+.table-nowrap td.author {
+  text-align: left;
+}
+
+.table-nowrap td.title {
+  text-align: left;
+}
+
+.table-nowrap td.genre {
+  text-align: center;
+}
+
+.table-nowrap td.shelf {
+  text-align: center;
+}
+
+.table-nowrap td.action {
+  text-align: center;
 }
