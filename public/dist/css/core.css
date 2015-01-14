@@ -311,10 +311,11 @@ body {
 
 .pagination-header {
   text-align: left;
+  margin: 20px 0;
 }
 
 .input-group .form-control.pagination-per-page {
-  width: 60px;
+  width: 70px;
 }
 
 table {
