@@ -313,8 +313,13 @@ body {
   text-align: left;
 }
 
+.input-group .form-control.pagination-per-page {
+  width: 60px;
+}
+
 table {
-    text-shadow: 1px 1px 3px rgba(0,0,0,1);
+    text-shadow: none;
+    color: #000;
 }
 
 .table-nowrap {
@@ -342,7 +347,7 @@ table {
 }
 
 .table-nowrap .genre {
-  width: 10%;
+  width: 11%;
 }
 
 .table-nowrap .shelf {
@@ -350,7 +355,7 @@ table {
 }
 
 .table-nowrap .action {
-  width: 8%;
+  width: 7%;
 }
 
 .table-nowrap td.author {
