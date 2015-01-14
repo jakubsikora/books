@@ -38,6 +38,25 @@
                 </div>
             </form>
         </div>
+
+        <div class="col-xs-3 col-sm-3 pull-right">
+            <div class="input-group input-group-md alert-pagination">
+                <span class="input-group-addon">
+                    {{ pagination.firstOnPage }} - {{ pagination.lastOnPage }}
+                    {{ 'of' | translate }}
+                    {{ pagination.totalItems }} {{ 'books' | translate }}
+                </span>
+                <select class="form-control pagination-per-page"
+                        ng-model="filter.itemsPerPage">
+                    <option value="1">1</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+        </div>
     </div>
 
 <!--     <div class="row list-buffer">
@@ -94,25 +113,6 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-3 col-sm-3">
-            <div class="input-group input-group-md alert-pagination">
-                <span class="input-group-addon">
-                    {{ pagination.firstOnPage }} - {{ pagination.lastOnPage }}
-                    {{ 'of' | translate }}
-                    {{ pagination.totalItems }} {{ 'books' | translate }}
-                </span>
-                <select class="form-control pagination-per-page"
-                        ng-model="filter.itemsPerPage">
-                    <option value="1">1</option>
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-            </div>
-        </div>
-
         <div class="col-xs-3 col-sm-3 pull-right">
             <div class="input-group">
                 <pagination total-items="pagination.totalItems"
