@@ -1,7 +1,7 @@
 {
   "name": "books",
   "description": "Home books library",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Jakub Sikora",
   "engines": {
     "node": "0.10.x",
