@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-	db: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://staging:Staging1!@dogen.mongohq.com:10099/mybooks',
+	db: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://127.0.0.1:27017/mybooks',
 
 	assets: {
 		lib: {
