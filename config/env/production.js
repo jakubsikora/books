@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-	db: 'mongodb://' + process.env.MONGO_HOST + '/' + process.env.MONGO_DBNAME,
+	db: 'mongodb://' + process.env.MONGO_HOST,
 
 	assets: {
 		lib: {
