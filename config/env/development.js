@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-	db: process.env.MONGO_URL,
+	db: 'mongodb://127.0.0.1:' + process.env.MONGO_PORT + '/' + process.env.MONGO_DBNAME,
 	app: {
 		title: 'books - Development Environment'
 	},
